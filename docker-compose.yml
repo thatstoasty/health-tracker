@@ -2,7 +2,7 @@ version: "3.9"
     
 services:
   db:
-    image: mtavarez/health-tracker-db:${IMAGE_VERSION}
+    image: mtavarez/health-tracker-db:${DB_IMAGE_VERSION}
     volumes:
       - C:\Workspace\Volumes\sci\postgres:/var/lib/postgresql/data
     restart: always

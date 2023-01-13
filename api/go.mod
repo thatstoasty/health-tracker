@@ -1,4 +1,4 @@
-module example/hello
+module health-tracker/api
 
 go 1.19
 
