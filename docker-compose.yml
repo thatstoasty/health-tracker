@@ -1,0 +1,16 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mtavarez/health-tracker-db:${IMAGE_VERSION}
+    volumes:
+      - C:\Workspace\Volumes\sci\postgres:/var/lib/postgresql/data
+    restart: always
+    ports:
+        - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+volumes:
+  db_data: {}
