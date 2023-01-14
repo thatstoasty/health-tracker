@@ -7,21 +7,21 @@ import (
 )
 
 // Submit nutrition entry
-func submitNutrition(c echo.Context) error {
+func SubmitNutrition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Get nutrition entry details
-func getNutritionDetails(c echo.Context) error {
+func GetNutritionDetails(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Update nutrition entry details
-func updateNutrition(c echo.Context) error {
+func UpdateNutrition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Delete nutrition entry
-func deleteNutrition(c echo.Context) error {
+func DeleteNutrition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }

@@ -7,21 +7,21 @@ import (
 )
 
 // Submit workout
-func submitWorkout(c echo.Context) error {
+func SubmitWorkout(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Get workout details
-func getWorkoutDetails(c echo.Context) error {
+func GetWorkoutDetails(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Update workout details
-func updateWorkout(c echo.Context) error {
+func UpdateWorkout(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Delete workout
-func deleteWorkout(c echo.Context) error {
+func DeleteWorkout(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }

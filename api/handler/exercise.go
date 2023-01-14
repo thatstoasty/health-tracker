@@ -7,6 +7,6 @@ import (
 )
 
 // Get exercise details
-func getExerciseDetails(c echo.Context) error {
+func GetExerciseDetails(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }

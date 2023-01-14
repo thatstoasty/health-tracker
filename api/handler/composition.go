@@ -7,21 +7,21 @@ import (
 )
 
 // Submit composition entry
-func submitComposition(c echo.Context) error {
+func SubmitComposition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Get composition entry details
-func getCompositionDetails(c echo.Context) error {
+func GetCompositionDetails(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Update composition entry details
-func updateComposition(c echo.Context) error {
+func UpdateComposition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
 
 // Delete composition entry
-func deleteComposition(c echo.Context) error {
+func DeleteComposition(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!\n")
 }
