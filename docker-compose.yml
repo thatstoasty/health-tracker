@@ -4,7 +4,7 @@ services:
   db:
     image: mtavarez/health-tracker-db:${DB_IMAGE_VERSION}
     volumes:
-      - C:\Workspace\Volumes\sci\postgres:/var/lib/postgresql/data
+      - health-tracker-pg:/var/lib/postgresql/data
     restart: always
     ports:
         - "5432:5432"
@@ -13,4 +13,4 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 volumes:
-  db_data: {}
+  health-tracker-pg: {}
