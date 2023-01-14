@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/thatstoasty/health-tracker/handler"
 )
 
 
@@ -16,25 +17,25 @@ func main() {
 
 	// Route => handler
 	//// Workout
-	e.POST("/workout", handler.submit_workout)
-	e.GET("/workout", handler.get_workout_details)
-	e.PATCH("/workout", handler.update_workout)
-	e.DELETE("/workout", handler.delete_workout)
+	e.POST("/workout", handler.submitWorkout)
+	e.GET("/workout", handler.getWorkoutDetails)
+	e.PATCH("/workout", handler.updateWorkout)
+	e.DELETE("/workout", handler.deleteWorkout)
 
 	//// Composition
-	e.POST("/composition", handler.submit_composition)
-	e.GET("/composition", handler.get_composition_details)
-	e.PATCH("/composition", handler.update_composition)
-	e.DELETE("/composition", handler.delete_composition)
+	e.POST("/composition", handler.submitComposition)
+	e.GET("/composition", handler.getCompositionDetails)
+	e.PATCH("/composition", handler.updateComposition)
+	e.DELETE("/composition", handler.deleteComposition)
 
 	//// Exercise
-	e.GET("/exercise", handler.get_exercise)
+	e.GET("/exercise", handler.getExercise)
 
 	//// Composition
-	e.POST("/nutrition", handler.submit_nutrition)
-	e.GET("/nutrition", handler.get_nutrition_details)
-	e.PATCH("/nutrition", handler.update_nutrition)
-	e.DELETE("/nutrition", handler.delete_nutrition)
+	e.POST("/nutrition", handler.submitNutrition)
+	e.GET("/nutrition", handler.getNutritionDetails)
+	e.PATCH("/nutrition", handler.updateNutrition)
+	e.DELETE("/nutrition", handler.deleteNutrition)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
