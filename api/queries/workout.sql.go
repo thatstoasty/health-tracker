@@ -21,9 +21,9 @@ RETURNING workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_
 
 type CreateWorkoutParams struct {
 	Exercise      sql.NullString
-	Sets          interface{}
-	Reps          interface{}
-	Weight        interface{}
+	Sets          int16
+	Reps          int16
+	Weight        int16
 	RepsInReserve sql.NullString
 }
 

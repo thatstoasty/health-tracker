@@ -6,40 +6,48 @@ package api
 
 import (
 	"database/sql"
+	"time"
 
 	"github.com/tabbed/pqtype"
 )
 
 type TrackerComposition struct {
-	Date         sql.NullTime
+	Date         time.Time
 	Weight       string
-	Bodyfat      interface{}
-	Neck         interface{}
-	Shoulders    interface{}
-	LeftBicep    interface{}
-	RightBicep   interface{}
-	LeftTricep   interface{}
-	RightTricep  interface{}
-	LeftForearm  interface{}
-	RightForearm interface{}
-	Chest        interface{}
-	Waist        interface{}
-	LeftQuad     interface{}
-	RightQuad    interface{}
-	LeftCalf     interface{}
-	RightCalf    interface{}
+	Bodyfat      sql.NullInt16
+	Neck         sql.NullInt16
+	Shoulders    sql.NullInt16
+	LeftBicep    sql.NullInt16
+	RightBicep   sql.NullInt16
+	LeftTricep   sql.NullInt16
+	RightTricep  sql.NullInt16
+	LeftForearm  sql.NullInt16
+	RightForearm sql.NullInt16
+	Chest        sql.NullInt16
+	Waist        sql.NullInt16
+	LeftQuad     sql.NullInt16
+	RightQuad    sql.NullInt16
+	LeftCalf     sql.NullInt16
+	RightCalf    sql.NullInt16
 	CretTs       sql.NullTime
 	UpdtTs       sql.NullTime
 }
 
 type TrackerExercise struct {
 	Exercise string
+	Rating   sql.NullInt16
 	CretTs   sql.NullTime
 	UpdtTs   sql.NullTime
 }
 
+type TrackerExerciseDetail struct {
+	Exercise sql.NullString
+	BodyPart sql.NullString
+	Level    sql.NullString
+}
+
 type TrackerNutrition struct {
-	Date           sql.NullTime
+	Date           time.Time
 	Calories       int16
 	Protein        sql.NullInt16
 	Carbohydrate   sql.NullInt16
@@ -53,9 +61,9 @@ type TrackerWorkout struct {
 	WorkoutID     int32
 	Date          sql.NullTime
 	Exercise      sql.NullString
-	Sets          interface{}
-	Reps          interface{}
-	Weight        interface{}
+	Sets          int16
+	Reps          int16
+	Weight        int16
 	RepsInReserve sql.NullString
 	CretTs        sql.NullTime
 	UpdtTs        sql.NullTime

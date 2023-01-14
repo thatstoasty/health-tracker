@@ -8,6 +8,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createComposition = `-- name: CreateComposition :one
@@ -21,7 +22,7 @@ RETURNING date, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_
 
 type CreateCompositionParams struct {
 	Weight  string
-	Bodyfat interface{}
+	Bodyfat sql.NullInt16
 }
 
 func (q *Queries) CreateComposition(ctx context.Context, arg CreateCompositionParams) (TrackerComposition, error) {
@@ -56,7 +57,7 @@ DELETE FROM tracker.composition
 WHERE DATE = $1
 `
 
-func (q *Queries) DeleteComposition(ctx context.Context, date sql.NullTime) error {
+func (q *Queries) DeleteComposition(ctx context.Context, date time.Time) error {
 	_, err := q.db.ExecContext(ctx, deleteComposition, date)
 	return err
 }
@@ -66,7 +67,7 @@ SELECT date, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tri
 WHERE DATE = $1 LIMIT 1
 `
 
-func (q *Queries) GetComposition(ctx context.Context, date sql.NullTime) (TrackerComposition, error) {
+func (q *Queries) GetComposition(ctx context.Context, date time.Time) (TrackerComposition, error) {
 	row := q.db.QueryRowContext(ctx, getComposition, date)
 	var i TrackerComposition
 	err := row.Scan(

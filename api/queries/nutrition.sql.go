@@ -8,6 +8,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createNutrition = `-- name: CreateNutrition :one
@@ -52,7 +53,7 @@ DELETE FROM tracker.nutrition
 WHERE DATE = $1
 `
 
-func (q *Queries) DeleteNutrition(ctx context.Context, date sql.NullTime) error {
+func (q *Queries) DeleteNutrition(ctx context.Context, date time.Time) error {
 	_, err := q.db.ExecContext(ctx, deleteNutrition, date)
 	return err
 }
@@ -62,7 +63,7 @@ SELECT date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt
 WHERE DATE = $1 LIMIT 1
 `
 
-func (q *Queries) GetNutrition(ctx context.Context, date sql.NullTime) (TrackerNutrition, error) {
+func (q *Queries) GetNutrition(ctx context.Context, date time.Time) (TrackerNutrition, error) {
 	row := q.db.QueryRowContext(ctx, getNutrition, date)
 	var i TrackerNutrition
 	err := row.Scan(
