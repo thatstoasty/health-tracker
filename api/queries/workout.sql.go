@@ -3,38 +3,30 @@
 //   sqlc v1.16.0
 // source: workout.sql
 
-package api
+package queries
 
 import (
 	"context"
 	"database/sql"
 )
 
-const createWorkout = `-- name: CreateWorkout :one
-INSERT INTO tracker.workout (
-  EXERCISE, SETS, REPS, WEIGHT, REPS_IN_RESERVE
-) VALUES (
-  $1, $2, $3, $4, $5
-)
-RETURNING workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts
+const deleteWorkout = `-- name: DeleteWorkout :exec
+DELETE FROM tracker.workout
+WHERE DATE = $1
 `
 
-type CreateWorkoutParams struct {
-	Exercise      sql.NullString
-	Sets          int16
-	Reps          int16
-	Weight        int16
-	RepsInReserve sql.NullString
+func (q *Queries) DeleteWorkout(ctx context.Context, date sql.NullTime) error {
+	_, err := q.db.ExecContext(ctx, deleteWorkout, date)
+	return err
 }
 
-func (q *Queries) CreateWorkout(ctx context.Context, arg CreateWorkoutParams) (TrackerWorkout, error) {
-	row := q.db.QueryRowContext(ctx, createWorkout,
-		arg.Exercise,
-		arg.Sets,
-		arg.Reps,
-		arg.Weight,
-		arg.RepsInReserve,
-	)
+const getWorkoutDetails = `-- name: GetWorkoutDetails :one
+SELECT workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts FROM tracker.workout
+WHERE DATE = $1 LIMIT 1
+`
+
+func (q *Queries) GetWorkoutDetails(ctx context.Context, date sql.NullTime) (TrackerWorkout, error) {
+	row := q.db.QueryRowContext(ctx, getWorkoutDetails, date)
 	var i TrackerWorkout
 	err := row.Scan(
 		&i.WorkoutID,
@@ -50,23 +42,31 @@ func (q *Queries) CreateWorkout(ctx context.Context, arg CreateWorkoutParams) (T
 	return i, err
 }
 
-const deleteWorkout = `-- name: DeleteWorkout :exec
-DELETE FROM tracker.workout
-WHERE DATE = $1
+const submitWorkout = `-- name: SubmitWorkout :one
+INSERT INTO tracker.workout (
+  EXERCISE, SETS, REPS, WEIGHT, REPS_IN_RESERVE
+) VALUES (
+  $1, $2, $3, $4, $5
+)
+RETURNING workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts
 `
 
-func (q *Queries) DeleteWorkout(ctx context.Context, date sql.NullTime) error {
-	_, err := q.db.ExecContext(ctx, deleteWorkout, date)
-	return err
+type SubmitWorkoutParams struct {
+	Exercise      sql.NullString
+	Sets          int16
+	Reps          int16
+	Weight        int16
+	RepsInReserve sql.NullString
 }
 
-const getWorkout = `-- name: GetWorkout :one
-SELECT workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts FROM tracker.workout
-WHERE DATE = $1 LIMIT 1
-`
-
-func (q *Queries) GetWorkout(ctx context.Context, date sql.NullTime) (TrackerWorkout, error) {
-	row := q.db.QueryRowContext(ctx, getWorkout, date)
+func (q *Queries) SubmitWorkout(ctx context.Context, arg SubmitWorkoutParams) (TrackerWorkout, error) {
+	row := q.db.QueryRowContext(ctx, submitWorkout,
+		arg.Exercise,
+		arg.Sets,
+		arg.Reps,
+		arg.Weight,
+		arg.RepsInReserve,
+	)
 	var i TrackerWorkout
 	err := row.Scan(
 		&i.WorkoutID,

@@ -2,33 +2,32 @@
 // versions:
 //   sqlc v1.16.0
 
-package api
+package queries
 
 import (
 	"database/sql"
-	"time"
 
 	"github.com/tabbed/pqtype"
 )
 
 type TrackerComposition struct {
-	Date         time.Time
+	Date         string
 	Weight       string
-	Bodyfat      sql.NullInt16
-	Neck         sql.NullInt16
-	Shoulders    sql.NullInt16
-	LeftBicep    sql.NullInt16
-	RightBicep   sql.NullInt16
-	LeftTricep   sql.NullInt16
-	RightTricep  sql.NullInt16
-	LeftForearm  sql.NullInt16
-	RightForearm sql.NullInt16
-	Chest        sql.NullInt16
-	Waist        sql.NullInt16
-	LeftQuad     sql.NullInt16
-	RightQuad    sql.NullInt16
-	LeftCalf     sql.NullInt16
-	RightCalf    sql.NullInt16
+	Bodyfat      string
+	Neck         sql.NullString
+	Shoulders    sql.NullString
+	LeftBicep    sql.NullString
+	RightBicep   sql.NullString
+	LeftTricep   sql.NullString
+	RightTricep  sql.NullString
+	LeftForearm  sql.NullString
+	RightForearm sql.NullString
+	Chest        sql.NullString
+	Waist        sql.NullString
+	LeftQuad     sql.NullString
+	RightQuad    sql.NullString
+	LeftCalf     sql.NullString
+	RightCalf    sql.NullString
 	CretTs       sql.NullTime
 	UpdtTs       sql.NullTime
 }
@@ -47,7 +46,7 @@ type TrackerExerciseDetail struct {
 }
 
 type TrackerNutrition struct {
-	Date           time.Time
+	Date           string
 	Calories       int16
 	Protein        sql.NullInt16
 	Carbohydrate   sql.NullInt16

@@ -1,4 +1,4 @@
--- name: CreateWorkout :one
+-- name: SubmitWorkout :one
 INSERT INTO tracker.workout (
   EXERCISE, SETS, REPS, WEIGHT, REPS_IN_RESERVE
 ) VALUES (
@@ -6,7 +6,7 @@ INSERT INTO tracker.workout (
 )
 RETURNING *;
 
--- name: GetWorkout :one
+-- name: GetWorkoutDetails :one
 SELECT * FROM tracker.workout
 WHERE DATE = $1 LIMIT 1;
 

@@ -1,4 +1,4 @@
--- name: CreateNutrition :one
+-- name: SubmitNutrition :one
 INSERT INTO tracker.nutrition (
   CALORIES, PROTEIN, CARBOHYDRATE, FAT
 ) VALUES (
@@ -6,7 +6,7 @@ INSERT INTO tracker.nutrition (
 )
 RETURNING *;
 
--- name: GetNutrition :one
+-- name: GetNutritionDetails :one
 SELECT * FROM tracker.nutrition
 WHERE DATE = $1 LIMIT 1;
 

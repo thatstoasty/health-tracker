@@ -5,5 +5,5 @@ sql:
     schema: "db/ddl/"
     gen:
       go:
-        package: "api"
+        package: "queries"
         out: "api/queries"

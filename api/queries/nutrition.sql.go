@@ -3,37 +3,30 @@
 //   sqlc v1.16.0
 // source: nutrition.sql
 
-package api
+package queries
 
 import (
 	"context"
 	"database/sql"
-	"time"
 )
 
-const createNutrition = `-- name: CreateNutrition :one
-INSERT INTO tracker.nutrition (
-  CALORIES, PROTEIN, CARBOHYDRATE, FAT
-) VALUES (
-  $1, $2, $3, $4
-)
-RETURNING date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts
+const deleteNutrition = `-- name: DeleteNutrition :exec
+DELETE FROM tracker.nutrition
+WHERE DATE = $1
 `
 
-type CreateNutritionParams struct {
-	Calories     int16
-	Protein      sql.NullInt16
-	Carbohydrate sql.NullInt16
-	Fat          sql.NullInt16
+func (q *Queries) DeleteNutrition(ctx context.Context, date string) error {
+	_, err := q.db.ExecContext(ctx, deleteNutrition, date)
+	return err
 }
 
-func (q *Queries) CreateNutrition(ctx context.Context, arg CreateNutritionParams) (TrackerNutrition, error) {
-	row := q.db.QueryRowContext(ctx, createNutrition,
-		arg.Calories,
-		arg.Protein,
-		arg.Carbohydrate,
-		arg.Fat,
-	)
+const getNutritionDetails = `-- name: GetNutritionDetails :one
+SELECT date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
+WHERE DATE = $1 LIMIT 1
+`
+
+func (q *Queries) GetNutritionDetails(ctx context.Context, date string) (TrackerNutrition, error) {
+	row := q.db.QueryRowContext(ctx, getNutritionDetails, date)
 	var i TrackerNutrition
 	err := row.Scan(
 		&i.Date,
@@ -48,23 +41,29 @@ func (q *Queries) CreateNutrition(ctx context.Context, arg CreateNutritionParams
 	return i, err
 }
 
-const deleteNutrition = `-- name: DeleteNutrition :exec
-DELETE FROM tracker.nutrition
-WHERE DATE = $1
+const submitNutrition = `-- name: SubmitNutrition :one
+INSERT INTO tracker.nutrition (
+  CALORIES, PROTEIN, CARBOHYDRATE, FAT
+) VALUES (
+  $1, $2, $3, $4
+)
+RETURNING date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts
 `
 
-func (q *Queries) DeleteNutrition(ctx context.Context, date time.Time) error {
-	_, err := q.db.ExecContext(ctx, deleteNutrition, date)
-	return err
+type SubmitNutritionParams struct {
+	Calories     int16
+	Protein      sql.NullInt16
+	Carbohydrate sql.NullInt16
+	Fat          sql.NullInt16
 }
 
-const getNutrition = `-- name: GetNutrition :one
-SELECT date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
-WHERE DATE = $1 LIMIT 1
-`
-
-func (q *Queries) GetNutrition(ctx context.Context, date time.Time) (TrackerNutrition, error) {
-	row := q.db.QueryRowContext(ctx, getNutrition, date)
+func (q *Queries) SubmitNutrition(ctx context.Context, arg SubmitNutritionParams) (TrackerNutrition, error) {
+	row := q.db.QueryRowContext(ctx, submitNutrition,
+		arg.Calories,
+		arg.Protein,
+		arg.Carbohydrate,
+		arg.Fat,
+	)
 	var i TrackerNutrition
 	err := row.Scan(
 		&i.Date,

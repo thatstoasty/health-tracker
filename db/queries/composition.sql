@@ -1,4 +1,4 @@
--- name: CreateComposition :one
+-- name: SubmitComposition :one
 INSERT INTO tracker.composition (
   WEIGHT, BODYFAT
 ) VALUES (
@@ -6,7 +6,7 @@ INSERT INTO tracker.composition (
 )
 RETURNING *;
 
--- name: GetComposition :one
+-- name: GetCompositionDetails :one
 SELECT * FROM tracker.composition
 WHERE DATE = $1 LIMIT 1;
 
