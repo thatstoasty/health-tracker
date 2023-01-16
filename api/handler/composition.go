@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,20 +14,27 @@ import (
 	// "github.com/thatstoasty/health-tracker/types"
 )
 
-// func mapComposition(ob1 queries.TrackerComposition) types.Composition {
-// 	ob2 := &types.Composition { 
-// 		Date: queries.TrackerComposition.Date, 
-// 		Weight: queries.TrackerComposition.Weight, 
-// 		Bodyfat: queries.TrackerComposition.Bodyfat, 
-// 	}
-// 	return ob2
-// }
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "docker"
+	password = "docker"
+	dbname   = "docker"
+	sslmode  = "disable"
+  )
+
+func getConnectionString() string {
+	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+    host, port, user, password, dbname, sslmode)
+
+	return connectionString
+}
 
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
 	var requestBody queries.SubmitCompositionParams
-
-	db, err := sql.Open("postgres", "user=docker password=docker dbname=docker sslmode=disable")
+	connectionString := getConnectionString()
+	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 		log.Fatal("failed to establish connection to postgres")
@@ -55,7 +63,8 @@ func SubmitComposition(c echo.Context) error {
 
 // Get composition entry details
 func GetCompositionDetails(c echo.Context) error {
-	db, err := sql.Open("postgres", "user=docker password=docker dbname=docker sslmode=disable")
+	connectionString := getConnectionString()
+	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 		log.Fatal("failed to establish connection to postgres")
@@ -73,17 +82,53 @@ func GetCompositionDetails(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "failed to get composition details")
 	}
 
-	// result := mapComposition(composition)
-
 	return c.JSON(http.StatusOK, composition)
 }
 
 // Update composition entry details
 func UpdateComposition(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!\n")
+	connectionString := getConnectionString()
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		log.Fatal(err)
+		log.Fatal("failed to establish connection to postgres")
+		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+	}
+
+	queries := queries.New(db)
+	ctx := context.Background()
+	date := c.Param("date")
+
+	error := queries.DeleteComposition(ctx, date)
+	if error != nil {
+		log.Fatal(err)
+		log.Fatal("failed to delete composition")
+		return c.String(http.StatusBadRequest, "failed to delete composition")
+	}
+
+	return c.String(http.StatusOK, "Composition deleted.")
 }
 
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!\n")
+	connectionString := getConnectionString()
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		log.Fatal(err)
+		log.Fatal("failed to establish connection to postgres")
+		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+	}
+
+	queries := queries.New(db)
+	ctx := context.Background()
+	date := c.Param("date")
+
+	error := queries.DeleteComposition(ctx, date)
+	if error != nil {
+		log.Fatal(err)
+		log.Fatal("failed to delete composition")
+		return c.String(http.StatusBadRequest, "failed to delete composition")
+	}
+
+	return c.String(http.StatusOK, "Composition deleted.")
 }
