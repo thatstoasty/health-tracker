@@ -1,8 +1,6 @@
 package types
 
 import (
-	"time"
-
 	"github.com/shopspring/decimal"
 )
 
@@ -26,8 +24,6 @@ type Composition struct {
 	RightQuad    decimal.Decimal `json:"rightQuad,omitempty"`
 	LeftCalf     decimal.Decimal `json:"leftCalf,omitempty"`
 	RightCalf    decimal.Decimal `json:"rightCalf,omitempty"`
-	CreatedAt    time.Time       `json:"-"`
-	UpdatedAt    time.Time       `json:"-"`
 }
 
 // Nutrition 

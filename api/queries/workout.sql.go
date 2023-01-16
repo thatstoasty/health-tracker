@@ -8,6 +8,7 @@ package queries
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const deleteWorkout = `-- name: DeleteWorkout :exec
@@ -15,7 +16,7 @@ DELETE FROM tracker.workout
 WHERE DATE = $1
 `
 
-func (q *Queries) DeleteWorkout(ctx context.Context, date sql.NullTime) error {
+func (q *Queries) DeleteWorkout(ctx context.Context, date time.Time) error {
 	_, err := q.db.ExecContext(ctx, deleteWorkout, date)
 	return err
 }
@@ -25,7 +26,7 @@ SELECT workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts,
 WHERE DATE = $1 LIMIT 1
 `
 
-func (q *Queries) GetWorkoutDetails(ctx context.Context, date sql.NullTime) (TrackerWorkout, error) {
+func (q *Queries) GetWorkoutDetails(ctx context.Context, date time.Time) (TrackerWorkout, error) {
 	row := q.db.QueryRowContext(ctx, getWorkoutDetails, date)
 	var i TrackerWorkout
 	err := row.Scan(
@@ -52,7 +53,7 @@ RETURNING workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_
 `
 
 type SubmitWorkoutParams struct {
-	Exercise      sql.NullString
+	Exercise      string
 	Sets          int16
 	Reps          int16
 	Weight        int16

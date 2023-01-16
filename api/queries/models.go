@@ -6,51 +6,53 @@ package queries
 
 import (
 	"database/sql"
+	"time"
 
 	"github.com/tabbed/pqtype"
+	"github.com/thatstoasty/health-tracker/types"
 )
 
 type TrackerComposition struct {
-	Date         string
-	Weight       string
-	Bodyfat      string
-	Neck         sql.NullString
-	Shoulders    sql.NullString
-	LeftBicep    sql.NullString
-	RightBicep   sql.NullString
-	LeftTricep   sql.NullString
-	RightTricep  sql.NullString
-	LeftForearm  sql.NullString
-	RightForearm sql.NullString
-	Chest        sql.NullString
-	Waist        sql.NullString
-	LeftQuad     sql.NullString
-	RightQuad    sql.NullString
-	LeftCalf     sql.NullString
-	RightCalf    sql.NullString
-	CretTs       sql.NullTime
-	UpdtTs       sql.NullTime
+	Date         string `json:"date"`
+	Weight       string `json:"weight"`
+	Bodyfat      string `json:"bodyfat"`
+	Neck         types.NullString `json:"neck,omitempty"`
+	Shoulders    types.NullString `json:"shoulders,omitempty"`
+	LeftBicep    types.NullString `json:"leftBicep,omitempty"`
+	RightBicep   types.NullString `json:"rightBicep,omitempty"`
+	LeftTricep   types.NullString `json:"leftTricep,omitempty"`
+	RightTricep  types.NullString `json:"rightTricep,omitempty"`
+	LeftForearm  types.NullString `json:"leftForearm,omitempty"`
+	RightForearm types.NullString `json:"rightForearm,omitempty"`
+	Chest        types.NullString `json:"chest,omitempty"`
+	Waist        types.NullString `json:"waist,omitempty"`
+	LeftQuad     types.NullString `json:"leftQuad,omitempty"`
+	RightQuad    types.NullString `json:"rightQuad,omitempty"`
+	LeftCalf     types.NullString `json:"leftCalf,omitempty"`
+	RightCalf    types.NullString `json:"rightCalf,omitempty"`
+	CretTs       sql.NullTime `json:"-"`
+	UpdtTs       sql.NullTime `json:"-"`
 }
 
 type TrackerExercise struct {
 	Exercise string
-	Rating   sql.NullInt16
+	Rating   types.NullInt16
 	CretTs   sql.NullTime
 	UpdtTs   sql.NullTime
 }
 
 type TrackerExerciseDetail struct {
-	Exercise sql.NullString
-	BodyPart sql.NullString
-	Level    sql.NullString
+	Exercise string
+	BodyPart string
+	Level    string
 }
 
 type TrackerNutrition struct {
 	Date           string
 	Calories       int16
-	Protein        sql.NullInt16
-	Carbohydrate   sql.NullInt16
-	Fat            sql.NullInt16
+	Protein        types.NullInt16
+	Carbohydrate   types.NullInt16
+	Fat            types.NullInt16
 	Micronutrients pqtype.NullRawMessage
 	CretTs         sql.NullTime
 	UpdtTs         sql.NullTime
@@ -58,12 +60,12 @@ type TrackerNutrition struct {
 
 type TrackerWorkout struct {
 	WorkoutID     int32
-	Date          sql.NullTime
-	Exercise      sql.NullString
+	Date          time.Time
+	Exercise      string
 	Sets          int16
 	Reps          int16
 	Weight        int16
-	RepsInReserve sql.NullString
+	RepsInReserve types.NullString
 	CretTs        sql.NullTime
 	UpdtTs        sql.NullTime
 }
