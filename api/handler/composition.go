@@ -99,14 +99,14 @@ func UpdateComposition(c echo.Context) error {
 	ctx := context.Background()
 	date := c.Param("date")
 
-	error := queries.DeleteComposition(ctx, date)
+	error := queries.UpdateComposition(ctx, date)
 	if error != nil {
 		log.Fatal(err)
-		log.Fatal("failed to delete composition")
-		return c.String(http.StatusBadRequest, "failed to delete composition")
+		log.Fatal("failed to update composition")
+		return c.String(http.StatusBadRequest, "failed to update composition")
 	}
 
-	return c.String(http.StatusOK, "Composition deleted.")
+	return c.String(http.StatusOK, "Composition updated.")
 }
 
 // Delete composition entry
