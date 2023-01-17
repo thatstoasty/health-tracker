@@ -11,7 +11,6 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/thatstoasty/health-tracker/queries"
-	// "github.com/thatstoasty/health-tracker/types"
 )
 
 const (
@@ -99,7 +98,7 @@ func UpdateComposition(c echo.Context) error {
 	ctx := context.Background()
 	date := c.Param("date")
 
-	error := queries.UpdateComposition(ctx, date)
+	error := queries.DeleteComposition(ctx, date)
 	if error != nil {
 		log.Fatal(err)
 		log.Fatal("failed to update composition")

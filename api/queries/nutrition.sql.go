@@ -12,24 +12,24 @@ import (
 
 const deleteNutrition = `-- name: DeleteNutrition :exec
 DELETE FROM tracker.nutrition
-WHERE DATE = $1
+WHERE SUBMITTED_ON = $1
 `
 
-func (q *Queries) DeleteNutrition(ctx context.Context, date string) error {
-	_, err := q.db.ExecContext(ctx, deleteNutrition, date)
+func (q *Queries) DeleteNutrition(ctx context.Context, submittedOn string) error {
+	_, err := q.db.ExecContext(ctx, deleteNutrition, submittedOn)
 	return err
 }
 
 const getNutritionDetails = `-- name: GetNutritionDetails :one
-SELECT date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
-WHERE DATE = $1 LIMIT 1
+SELECT submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
+WHERE SUBMITTED_ON = $1 LIMIT 1
 `
 
-func (q *Queries) GetNutritionDetails(ctx context.Context, date string) (TrackerNutrition, error) {
-	row := q.db.QueryRowContext(ctx, getNutritionDetails, date)
+func (q *Queries) GetNutritionDetails(ctx context.Context, submittedOn string) (TrackerNutrition, error) {
+	row := q.db.QueryRowContext(ctx, getNutritionDetails, submittedOn)
 	var i TrackerNutrition
 	err := row.Scan(
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Calories,
 		&i.Protein,
 		&i.Carbohydrate,
@@ -47,7 +47,7 @@ INSERT INTO tracker.nutrition (
 ) VALUES (
   $1, $2, $3, $4
 )
-RETURNING date, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts
+RETURNING submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts
 `
 
 type SubmitNutritionParams struct {
@@ -66,7 +66,7 @@ func (q *Queries) SubmitNutrition(ctx context.Context, arg SubmitNutritionParams
 	)
 	var i TrackerNutrition
 	err := row.Scan(
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Calories,
 		&i.Protein,
 		&i.Carbohydrate,

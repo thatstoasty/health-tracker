@@ -9,11 +9,13 @@ import (
 	"time"
 
 	"github.com/tabbed/pqtype"
+
 	"github.com/thatstoasty/health-tracker/types"
+
 )
 
 type TrackerComposition struct {
-	Date         string `json:"date"`
+	SubmittedOn  string `json:"date"`
 	Weight       string `json:"weight"`
 	Bodyfat      string `json:"bodyfat"`
 	Neck         types.NullString `json:"neck,omitempty"`
@@ -36,7 +38,7 @@ type TrackerComposition struct {
 
 type TrackerExercise struct {
 	Exercise string
-	Rating   types.NullInt16
+	Rating   sql.NullInt16
 	CretTs   sql.NullTime
 	UpdtTs   sql.NullTime
 }
@@ -48,11 +50,11 @@ type TrackerExerciseDetail struct {
 }
 
 type TrackerNutrition struct {
-	Date           string
+	SubmittedOn    string
 	Calories       int16
-	Protein        types.NullInt16
-	Carbohydrate   types.NullInt16
-	Fat            types.NullInt16
+	Protein        sql.NullInt16
+	Carbohydrate   sql.NullInt16
+	Fat            sql.NullInt16
 	Micronutrients pqtype.NullRawMessage
 	CretTs         sql.NullTime
 	UpdtTs         sql.NullTime
@@ -60,12 +62,12 @@ type TrackerNutrition struct {
 
 type TrackerWorkout struct {
 	WorkoutID     int32
-	Date          time.Time
+	SubmittedOn   time.Time
 	Exercise      string
 	Sets          int16
 	Reps          int16
 	Weight        int16
-	RepsInReserve types.NullString
+	RepsInReserve sql.NullString
 	CretTs        sql.NullTime
 	UpdtTs        sql.NullTime
 }

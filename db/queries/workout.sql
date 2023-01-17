@@ -8,8 +8,8 @@ RETURNING *;
 
 -- name: GetWorkoutDetails :one
 SELECT * FROM tracker.workout
-WHERE DATE = $1 LIMIT 1;
+WHERE SUBMITTED_ON = $1 LIMIT 1;
 
 -- name: DeleteWorkout :exec
 DELETE FROM tracker.workout
-WHERE DATE = $1;
+WHERE SUBMITTED_ON = $1;

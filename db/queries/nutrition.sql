@@ -8,8 +8,8 @@ RETURNING *;
 
 -- name: GetNutritionDetails :one
 SELECT * FROM tracker.nutrition
-WHERE DATE = $1 LIMIT 1;
+WHERE SUBMITTED_ON = $1 LIMIT 1;
 
 -- name: DeleteNutrition :exec
 DELETE FROM tracker.nutrition
-WHERE DATE = $1;
+WHERE SUBMITTED_ON = $1;

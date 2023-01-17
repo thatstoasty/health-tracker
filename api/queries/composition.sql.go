@@ -11,24 +11,24 @@ import (
 
 const deleteComposition = `-- name: DeleteComposition :exec
 DELETE FROM tracker.composition
-WHERE DATE = $1
+WHERE SUBMITTED_ON = $1
 `
 
-func (q *Queries) DeleteComposition(ctx context.Context, date string) error {
-	_, err := q.db.ExecContext(ctx, deleteComposition, date)
+func (q *Queries) DeleteComposition(ctx context.Context, submittedOn string) error {
+	_, err := q.db.ExecContext(ctx, deleteComposition, submittedOn)
 	return err
 }
 
 const getCompositionDetails = `-- name: GetCompositionDetails :one
-SELECT date, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tricep, right_tricep, left_forearm, right_forearm, chest, waist, left_quad, right_quad, left_calf, right_calf, cret_ts, updt_ts FROM tracker.composition
-WHERE DATE = $1 LIMIT 1
+SELECT submitted_on, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tricep, right_tricep, left_forearm, right_forearm, chest, waist, left_quad, right_quad, left_calf, right_calf, cret_ts, updt_ts FROM tracker.composition
+WHERE SUBMITTED_ON = $1 LIMIT 1
 `
 
-func (q *Queries) GetCompositionDetails(ctx context.Context, date string) (TrackerComposition, error) {
-	row := q.db.QueryRowContext(ctx, getCompositionDetails, date)
+func (q *Queries) GetCompositionDetails(ctx context.Context, submittedOn string) (TrackerComposition, error) {
+	row := q.db.QueryRowContext(ctx, getCompositionDetails, submittedOn)
 	var i TrackerComposition
 	err := row.Scan(
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Weight,
 		&i.Bodyfat,
 		&i.Neck,
@@ -57,7 +57,7 @@ INSERT INTO tracker.composition (
 ) VALUES (
   $1, $2
 )
-RETURNING date, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tricep, right_tricep, left_forearm, right_forearm, chest, waist, left_quad, right_quad, left_calf, right_calf, cret_ts, updt_ts
+RETURNING submitted_on, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tricep, right_tricep, left_forearm, right_forearm, chest, waist, left_quad, right_quad, left_calf, right_calf, cret_ts, updt_ts
 `
 
 type SubmitCompositionParams struct {
@@ -69,7 +69,7 @@ func (q *Queries) SubmitComposition(ctx context.Context, arg SubmitCompositionPa
 	row := q.db.QueryRowContext(ctx, submitComposition, arg.Weight, arg.Bodyfat)
 	var i TrackerComposition
 	err := row.Scan(
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Weight,
 		&i.Bodyfat,
 		&i.Neck,

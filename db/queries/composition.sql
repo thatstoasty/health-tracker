@@ -8,8 +8,8 @@ RETURNING *;
 
 -- name: GetCompositionDetails :one
 SELECT * FROM tracker.composition
-WHERE DATE = $1 LIMIT 1;
+WHERE SUBMITTED_ON = $1 LIMIT 1;
 
 -- name: DeleteComposition :exec
 DELETE FROM tracker.composition
-WHERE DATE = $1;
+WHERE SUBMITTED_ON = $1;

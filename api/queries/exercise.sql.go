@@ -11,7 +11,7 @@ import (
 
 const getExerciseDetails = `-- name: GetExerciseDetails :one
 SELECT exercise, rating, cret_ts, updt_ts FROM tracker.exercise
-WHERE Exercise = $1 LIMIT 1
+WHERE EXERCISE = $1 LIMIT 1
 `
 
 func (q *Queries) GetExerciseDetails(ctx context.Context, exercise string) (TrackerExercise, error) {

@@ -13,25 +13,25 @@ import (
 
 const deleteWorkout = `-- name: DeleteWorkout :exec
 DELETE FROM tracker.workout
-WHERE DATE = $1
+WHERE SUBMITTED_ON = $1
 `
 
-func (q *Queries) DeleteWorkout(ctx context.Context, date time.Time) error {
-	_, err := q.db.ExecContext(ctx, deleteWorkout, date)
+func (q *Queries) DeleteWorkout(ctx context.Context, submittedOn time.Time) error {
+	_, err := q.db.ExecContext(ctx, deleteWorkout, submittedOn)
 	return err
 }
 
 const getWorkoutDetails = `-- name: GetWorkoutDetails :one
-SELECT workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts FROM tracker.workout
-WHERE DATE = $1 LIMIT 1
+SELECT workout_id, submitted_on, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts FROM tracker.workout
+WHERE SUBMITTED_ON = $1 LIMIT 1
 `
 
-func (q *Queries) GetWorkoutDetails(ctx context.Context, date time.Time) (TrackerWorkout, error) {
-	row := q.db.QueryRowContext(ctx, getWorkoutDetails, date)
+func (q *Queries) GetWorkoutDetails(ctx context.Context, submittedOn time.Time) (TrackerWorkout, error) {
+	row := q.db.QueryRowContext(ctx, getWorkoutDetails, submittedOn)
 	var i TrackerWorkout
 	err := row.Scan(
 		&i.WorkoutID,
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Exercise,
 		&i.Sets,
 		&i.Reps,
@@ -49,7 +49,7 @@ INSERT INTO tracker.workout (
 ) VALUES (
   $1, $2, $3, $4, $5
 )
-RETURNING workout_id, date, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts
+RETURNING workout_id, submitted_on, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts
 `
 
 type SubmitWorkoutParams struct {
@@ -71,7 +71,7 @@ func (q *Queries) SubmitWorkout(ctx context.Context, arg SubmitWorkoutParams) (T
 	var i TrackerWorkout
 	err := row.Scan(
 		&i.WorkoutID,
-		&i.Date,
+		&i.SubmittedOn,
 		&i.Exercise,
 		&i.Sets,
 		&i.Reps,
