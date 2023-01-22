@@ -84,30 +84,6 @@ func GetCompositionDetails(c echo.Context) error {
 	return c.JSON(http.StatusOK, composition)
 }
 
-// Update composition entry details
-func UpdateComposition(c echo.Context) error {
-	connectionString := getConnectionString()
-	db, err := sql.Open("postgres", connectionString)
-	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
-	}
-
-	queries := queries.New(db)
-	ctx := context.Background()
-	date := c.Param("date")
-
-	error := queries.DeleteComposition(ctx, date)
-	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to update composition")
-		return c.String(http.StatusBadRequest, "failed to update composition")
-	}
-
-	return c.String(http.StatusOK, "Composition updated.")
-}
-
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
 	connectionString := getConnectionString()

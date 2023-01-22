@@ -19,13 +19,11 @@ func main() {
 	//// Workout
 	e.POST("/workout", handler.SubmitWorkout)
 	e.GET("/workout", handler.GetWorkoutDetails)
-	e.PATCH("/workout", handler.UpdateWorkout)
 	e.DELETE("/workout", handler.DeleteWorkout)
 
 	//// Composition
 	e.POST("/composition", handler.SubmitComposition)
 	e.GET("/composition/:date", handler.GetCompositionDetails)
-	e.PATCH("/composition/:date", handler.UpdateComposition)
 	e.DELETE("/composition/:date ", handler.DeleteComposition)
 
 	//// Exercise
@@ -34,7 +32,6 @@ func main() {
 	//// Composition
 	e.POST("/nutrition", handler.SubmitNutrition)
 	e.GET("/nutrition/:date", handler.GetNutritionDetails)
-	e.PATCH("/nutrition/:date", handler.UpdateNutrition)
 	e.DELETE("/nutrition/:date", handler.DeleteNutrition)
 
 	// Start server

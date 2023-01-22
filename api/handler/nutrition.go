@@ -67,30 +67,6 @@ func GetNutritionDetails(c echo.Context) error {
 	return c.JSON(http.StatusOK, nutrition)
 }
 
-// Update nutrition entry details
-func UpdateNutrition(c echo.Context) error {
-	connectionString := getConnectionString()
-	db, err := sql.Open("postgres", connectionString)
-	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
-	}
-
-	queries := queries.New(db)
-	ctx := context.Background()
-	date := c.Param("date")
-
-	error := queries.DeleteNutrition(ctx, date)
-	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete nutrition")
-		return c.String(http.StatusBadRequest, "failed to delete nutrition")
-	}
-
-	return c.String(http.StatusOK, "Nutrition deleted.")
-}
-
 // Delete nutrition entry
 func DeleteNutrition(c echo.Context) error {
 	connectionString := getConnectionString()
@@ -108,8 +84,8 @@ func DeleteNutrition(c echo.Context) error {
 	error := queries.DeleteNutrition(ctx, date)
 	if error != nil {
 		log.Fatal(err)
-		log.Fatal("failed to delete nutrition")
-		return c.String(http.StatusBadRequest, "failed to delete nutrition")
+		log.Fatal("failed to delete nutrition entry")
+		return c.String(http.StatusBadRequest, "failed to delete nutrition entry")
 	}
 
 	return c.String(http.StatusOK, "Nutrition entry deleted.")
