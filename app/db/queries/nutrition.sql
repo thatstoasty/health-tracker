@@ -13,3 +13,7 @@ WHERE SUBMITTED_ON = $1 LIMIT 1;
 -- name: DeleteNutrition :exec
 DELETE FROM tracker.nutrition
 WHERE SUBMITTED_ON = $1;
+
+-- name: GetNutritionDates :many
+SELECT SUBMITTED_ON FROM tracker.nutrition
+LIMIT $1;

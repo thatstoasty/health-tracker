@@ -7,76 +7,96 @@ package queries
 
 import (
 	"context"
-	"database/sql"
 	"time"
 )
 
 const deleteWorkout = `-- name: DeleteWorkout :exec
 DELETE FROM tracker.workout
-WHERE SUBMITTED_ON = $1
+WHERE NAME = $1
 `
 
-func (q *Queries) DeleteWorkout(ctx context.Context, submittedOn time.Time) error {
-	_, err := q.db.ExecContext(ctx, deleteWorkout, submittedOn)
+func (q *Queries) DeleteWorkout(ctx context.Context, name string) error {
+	_, err := q.db.ExecContext(ctx, deleteWorkout, name)
 	return err
 }
 
-const getWorkoutDetails = `-- name: GetWorkoutDetails :one
-SELECT workout_id, submitted_on, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts FROM tracker.workout
-WHERE SUBMITTED_ON = $1 LIMIT 1
+const deleteWorkoutDetails = `-- name: DeleteWorkoutDetails :exec
+DELETE FROM tracker.workout_details
+WHERE WORKOUT_NAME = $1
 `
 
-func (q *Queries) GetWorkoutDetails(ctx context.Context, submittedOn time.Time) (TrackerWorkout, error) {
-	row := q.db.QueryRowContext(ctx, getWorkoutDetails, submittedOn)
+func (q *Queries) DeleteWorkoutDetails(ctx context.Context, workoutName string) error {
+	_, err := q.db.ExecContext(ctx, deleteWorkoutDetails, workoutName)
+	return err
+}
+
+const deleteWorkoutPerformed = `-- name: DeleteWorkoutPerformed :exec
+DELETE FROM tracker.workout_performed
+WHERE SUBMITTED_ON = $1
+`
+
+func (q *Queries) DeleteWorkoutPerformed(ctx context.Context, submittedOn time.Time) error {
+	_, err := q.db.ExecContext(ctx, deleteWorkoutPerformed, submittedOn)
+	return err
+}
+
+const getWorkout = `-- name: GetWorkout :one
+SELECT name, program_name, cret_ts, updt_ts FROM tracker.workout
+WHERE NAME = $1 LIMIT 1
+`
+
+func (q *Queries) GetWorkout(ctx context.Context, name string) (TrackerWorkout, error) {
+	row := q.db.QueryRowContext(ctx, getWorkout, name)
 	var i TrackerWorkout
 	err := row.Scan(
-		&i.WorkoutID,
-		&i.SubmittedOn,
-		&i.Exercise,
-		&i.Sets,
-		&i.Reps,
-		&i.Weight,
-		&i.RepsInReserve,
+		&i.Name,
+		&i.ProgramName,
 		&i.CretTs,
 		&i.UpdtTs,
 	)
 	return i, err
 }
 
-const submitWorkout = `-- name: SubmitWorkout :one
-INSERT INTO tracker.workout (
-  EXERCISE, SETS, REPS, WEIGHT, REPS_IN_RESERVE
-) VALUES (
-  $1, $2, $3, $4, $5
-)
-RETURNING workout_id, submitted_on, exercise, sets, reps, weight, reps_in_reserve, cret_ts, updt_ts
+const getWorkoutNames = `-- name: GetWorkoutNames :many
+SELECT NAME FROM tracker.workout
+LIMIT $1
 `
 
-type SubmitWorkoutParams struct {
-	Exercise      string
-	Sets          int16
-	Reps          int16
-	Weight        int16
-	RepsInReserve sql.NullString
+func (q *Queries) GetWorkoutNames(ctx context.Context, limit int32) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getWorkoutNames, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			return nil, err
+		}
+		items = append(items, name)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
-func (q *Queries) SubmitWorkout(ctx context.Context, arg SubmitWorkoutParams) (TrackerWorkout, error) {
-	row := q.db.QueryRowContext(ctx, submitWorkout,
-		arg.Exercise,
-		arg.Sets,
-		arg.Reps,
-		arg.Weight,
-		arg.RepsInReserve,
-	)
-	var i TrackerWorkout
+const getWorkoutPerformed = `-- name: GetWorkoutPerformed :one
+SELECT id, submitted_on, workout_name, cret_ts, updt_ts FROM tracker.workout_performed
+WHERE SUBMITTED_ON = $1 LIMIT 1
+`
+
+func (q *Queries) GetWorkoutPerformed(ctx context.Context, submittedOn time.Time) (TrackerWorkoutPerformed, error) {
+	row := q.db.QueryRowContext(ctx, getWorkoutPerformed, submittedOn)
+	var i TrackerWorkoutPerformed
 	err := row.Scan(
-		&i.WorkoutID,
+		&i.ID,
 		&i.SubmittedOn,
-		&i.Exercise,
-		&i.Sets,
-		&i.Reps,
-		&i.Weight,
-		&i.RepsInReserve,
+		&i.WorkoutName,
 		&i.CretTs,
 		&i.UpdtTs,
 	)

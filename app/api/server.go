@@ -16,18 +16,31 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Route => handler
+	//// Exercise
+	e.GET("/exercise", handler.GetExerciseNames)
+	e.GET("/exercise/:name", handler.GetExerciseDetails)
+	e.DELETE("/exercise/:name", handler.DeleteExercise)
+
 	//// Workout
-	e.POST("/workout", handler.SubmitWorkout)
-	e.GET("/workout", handler.GetWorkoutDetails)
-	e.DELETE("/workout", handler.DeleteWorkout)
+	e.GET("/workout", handler.GetWorkoutNames)
+	e.DELETE("/workout/:name", handler.DeleteWorkout)
+	e.GET("/workout/:name", handler.GetWorkoutDetails)
+	e.GET("/workout/:name/:date", handler.GetWorkoutPerformed)
+	e.DELETE("/workout/:name/:date", handler.DeleteWorkoutPerformed)
+
+	//// Program
+	e.GET("/exercise", handler.GetProgramNames)
+	e.GET("/exercise/:name", handler.GetProgramDetails)
+
 
 	//// Composition
 	e.POST("/composition", handler.SubmitComposition)
 	e.GET("/composition/:date", handler.GetCompositionDetails)
 	e.DELETE("/composition/:date ", handler.DeleteComposition)
 
-	//// Exercise
-	e.GET("/exercise/:name", handler.GetExerciseDetails)
+
+
+
 
 	//// Composition
 	e.POST("/nutrition", handler.SubmitNutrition)

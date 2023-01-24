@@ -20,6 +20,34 @@ func (q *Queries) DeleteNutrition(ctx context.Context, submittedOn string) error
 	return err
 }
 
+const getNutritionDates = `-- name: GetNutritionDates :many
+SELECT SUBMITTED_ON FROM tracker.nutrition
+LIMIT $1
+`
+
+func (q *Queries) GetNutritionDates(ctx context.Context, limit int32) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getNutritionDates, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var submitted_on string
+		if err := rows.Scan(&submitted_on); err != nil {
+			return nil, err
+		}
+		items = append(items, submitted_on)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getNutritionDetails = `-- name: GetNutritionDetails :one
 SELECT submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
 WHERE SUBMITTED_ON = $1 LIMIT 1
@@ -51,10 +79,10 @@ RETURNING submitted_on, calories, protein, carbohydrate, fat, micronutrients, cr
 `
 
 type SubmitNutritionParams struct {
-	Calories     int16
-	Protein      sql.NullInt16
-	Carbohydrate sql.NullInt16
-	Fat          sql.NullInt16
+	Calories     int16         `json:"calories"`
+	Protein      sql.NullInt16 `json:"protein"`
+	Carbohydrate sql.NullInt16 `json:"carbohydrate"`
+	Fat          sql.NullInt16 `json:"fat"`
 }
 
 func (q *Queries) SubmitNutrition(ctx context.Context, arg SubmitNutritionParams) (TrackerNutrition, error) {

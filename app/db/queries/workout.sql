@@ -1,15 +1,23 @@
--- name: SubmitWorkout :one
-INSERT INTO tracker.workout (
-  EXERCISE, SETS, REPS, WEIGHT, REPS_IN_RESERVE
-) VALUES (
-  $1, $2, $3, $4, $5
-)
-RETURNING *;
-
--- name: GetWorkoutDetails :one
-SELECT * FROM tracker.workout
+-- name: GetWorkoutPerformed :one
+SELECT * FROM tracker.workout_performed
 WHERE SUBMITTED_ON = $1 LIMIT 1;
+
+-- name: DeleteWorkoutPerformed :exec
+DELETE FROM tracker.workout_performed
+WHERE SUBMITTED_ON = $1;
+
+-- name: GetWorkoutNames :many
+SELECT NAME FROM tracker.workout
+LIMIT $1;
+
+-- name: GetWorkout :one
+SELECT * FROM tracker.workout
+WHERE NAME = $1 LIMIT 1;
 
 -- name: DeleteWorkout :exec
 DELETE FROM tracker.workout
-WHERE SUBMITTED_ON = $1;
+WHERE NAME = $1;
+
+-- name: DeleteWorkoutDetails :exec
+DELETE FROM tracker.workout_details
+WHERE WORKOUT_NAME = $1;

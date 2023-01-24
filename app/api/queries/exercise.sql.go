@@ -9,19 +9,86 @@ import (
 	"context"
 )
 
-const getExerciseDetails = `-- name: GetExerciseDetails :one
-SELECT exercise, rating, cret_ts, updt_ts FROM tracker.exercise
-WHERE EXERCISE = $1 LIMIT 1
+const deleteExercise = `-- name: DeleteExercise :exec
+DELETE FROM tracker.exercise
+WHERE NAME = $1
 `
 
-func (q *Queries) GetExerciseDetails(ctx context.Context, exercise string) (TrackerExercise, error) {
-	row := q.db.QueryRowContext(ctx, getExerciseDetails, exercise)
-	var i TrackerExercise
-	err := row.Scan(
-		&i.Exercise,
-		&i.Rating,
-		&i.CretTs,
-		&i.UpdtTs,
-	)
-	return i, err
+func (q *Queries) DeleteExercise(ctx context.Context, name string) error {
+	_, err := q.db.ExecContext(ctx, deleteExercise, name)
+	return err
+}
+
+const deleteExerciseDetails = `-- name: DeleteExerciseDetails :exec
+DELETE FROM tracker.exercise_details
+WHERE EXERCISE_NAME = $1
+`
+
+func (q *Queries) DeleteExerciseDetails(ctx context.Context, exerciseName string) error {
+	_, err := q.db.ExecContext(ctx, deleteExerciseDetails, exerciseName)
+	return err
+}
+
+const getExerciseDetails = `-- name: GetExerciseDetails :many
+SELECT a.name, b.body_part, b.level FROM tracker.exercise a
+JOIN tracker.exercise_details b
+ON a.name = b.exercise_name
+WHERE NAME = $1 LIMIT 1
+`
+
+type GetExerciseDetailsRow struct {
+	Name     string `json:"name"`
+	BodyPart string `json:"bodyPart"`
+	Level    string `json:"level"`
+}
+
+func (q *Queries) GetExerciseDetails(ctx context.Context, name string) ([]GetExerciseDetailsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getExerciseDetails, name)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetExerciseDetailsRow
+	for rows.Next() {
+		var i GetExerciseDetailsRow
+		if err := rows.Scan(&i.Name, &i.BodyPart, &i.Level); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getExercises = `-- name: GetExercises :many
+SELECT name FROM tracker.exercise
+LIMIT $1
+`
+
+func (q *Queries) GetExercises(ctx context.Context, limit int32) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getExercises, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			return nil, err
+		}
+		items = append(items, name)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
