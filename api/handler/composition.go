@@ -61,7 +61,7 @@ func SubmitComposition(c echo.Context) error {
 	return c.JSON(http.StatusOK, composition)}
 
 // Get composition entry details
-func GetCompositionDetails(c echo.Context) error {
+func GetComposition(c echo.Context) error {
 	connectionString := getConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
@@ -74,7 +74,7 @@ func GetCompositionDetails(c echo.Context) error {
 	ctx := context.Background()
 	date := c.Param("date")
 
-	composition, err := queries.GetCompositionDetails(ctx, date)
+	composition, err := queries.GetComposition(ctx, date)
 	if err != nil {
 		log.Fatal(err)
 		log.Fatal("failed to get composition details")

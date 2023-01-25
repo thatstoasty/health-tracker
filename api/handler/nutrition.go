@@ -41,10 +41,11 @@ func SubmitNutrition(c echo.Context) error {
 	}
 	log.Println(nutrition)
 
-	return c.JSON(http.StatusOK, nutrition)}
+	return c.JSON(http.StatusOK, nutrition)
+}
 
 // Get nutrition entry details
-func GetNutritionDetails(c echo.Context) error {
+func GetNutrition(c echo.Context) error {
 	connectionString := getConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {

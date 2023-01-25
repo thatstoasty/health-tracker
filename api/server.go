@@ -32,19 +32,14 @@ func main() {
 	e.GET("/exercise", handler.GetProgramNames)
 	e.GET("/exercise/:name", handler.GetProgramDetails)
 
-
 	//// Composition
 	e.POST("/composition", handler.SubmitComposition)
-	e.GET("/composition/:date", handler.GetCompositionDetails)
+	e.GET("/composition/:date", handler.GetComposition)
 	e.DELETE("/composition/:date ", handler.DeleteComposition)
 
-
-
-
-
-	//// Composition
+	//// Nutrition
 	e.POST("/nutrition", handler.SubmitNutrition)
-	e.GET("/nutrition/:date", handler.GetNutritionDetails)
+	e.GET("/nutrition/:date", handler.GetNutrition)
 	e.DELETE("/nutrition/:date", handler.DeleteNutrition)
 
 	// Start server
