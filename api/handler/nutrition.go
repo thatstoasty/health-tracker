@@ -10,12 +10,13 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/thatstoasty/health-tracker/queries"
+	"github.com/thatstoasty/health-tracker/utils"
 )
 
 // Submit nutrition entry
 func SubmitNutrition(c echo.Context) error {
 	var requestBody queries.SubmitNutritionParams
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
@@ -46,7 +47,7 @@ func SubmitNutrition(c echo.Context) error {
 
 // Get nutrition entry details
 func GetNutrition(c echo.Context) error {
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
@@ -58,7 +59,7 @@ func GetNutrition(c echo.Context) error {
 	ctx := context.Background()
 	date := c.Param("date")
 
-	nutrition, err := queries.GetNutritionDetails(ctx, date)
+	nutrition, err := queries.GetNutrition(ctx, date)
 	if err != nil {
 		log.Fatal(err)
 		log.Fatal("failed to get nutrition details")
@@ -70,7 +71,7 @@ func GetNutrition(c echo.Context) error {
 
 // Delete nutrition entry
 func DeleteNutrition(c echo.Context) error {
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)

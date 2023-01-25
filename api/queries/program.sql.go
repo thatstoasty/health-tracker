@@ -10,7 +10,7 @@ import (
 )
 
 const deleteProgram = `-- name: DeleteProgram :exec
-DELETE FROM tracker.program CASCADE
+DELETE FROM tracker.program
 WHERE NAME = $1
 `
 
@@ -19,26 +19,17 @@ func (q *Queries) DeleteProgram(ctx context.Context, name string) error {
 	return err
 }
 
-const deleteProgramDetails = `-- name: DeleteProgramDetails :exec
-DELETE FROM tracker.program_details
-WHERE PROGRAM_NAME = $1
-`
-
-func (q *Queries) DeleteProgramDetails(ctx context.Context, programName string) error {
-	_, err := q.db.ExecContext(ctx, deleteProgramDetails, programName)
-	return err
-}
-
-const getProgramDetails = `-- name: GetProgramDetails :many
+const getProgram = `-- name: GetProgram :many
 SELECT a.name, b.name, c.group_id, c.exercise_name, c.weight, c.sets, c.reps FROM tracker.program a
 JOIN tracker.workout b
 ON a.name = b.program_name
 JOIN tracker.workout_details c
 ON b.name = c.workout_name
-LIMIT $1
+WHERE a.name = $1
+LIMIT 1
 `
 
-type GetProgramDetailsRow struct {
+type GetProgramRow struct {
 	Name         string `json:"name"`
 	Name_2       string `json:"name2"`
 	GroupID      int16  `json:"groupID"`
@@ -48,15 +39,15 @@ type GetProgramDetailsRow struct {
 	Reps         int16  `json:"reps"`
 }
 
-func (q *Queries) GetProgramDetails(ctx context.Context, limit int32) ([]GetProgramDetailsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getProgramDetails, limit)
+func (q *Queries) GetProgram(ctx context.Context, name string) ([]GetProgramRow, error) {
+	rows, err := q.db.QueryContext(ctx, getProgram, name)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetProgramDetailsRow
+	var items []GetProgramRow
 	for rows.Next() {
-		var i GetProgramDetailsRow
+		var i GetProgramRow
 		if err := rows.Scan(
 			&i.Name,
 			&i.Name_2,

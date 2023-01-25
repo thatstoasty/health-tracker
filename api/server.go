@@ -18,19 +18,19 @@ func main() {
 	// Route => handler
 	//// Exercise
 	e.GET("/exercise", handler.GetExerciseNames)
-	e.GET("/exercise/:name", handler.GetExerciseDetails)
+	e.GET("/exercise/:name", handler.GetExercise)
 	e.DELETE("/exercise/:name", handler.DeleteExercise)
 
 	//// Workout
 	e.GET("/workout", handler.GetWorkoutNames)
 	e.DELETE("/workout/:name", handler.DeleteWorkout)
-	e.GET("/workout/:name", handler.GetWorkoutDetails)
+	e.GET("/workout/:name", handler.GetWorkout)
 	e.GET("/workout/:name/:date", handler.GetWorkoutPerformed)
 	e.DELETE("/workout/:name/:date", handler.DeleteWorkoutPerformed)
 
 	//// Program
 	e.GET("/exercise", handler.GetProgramNames)
-	e.GET("/exercise/:name", handler.GetProgramDetails)
+	e.GET("/exercise/:name", handler.GetProgram)
 
 	//// Composition
 	e.POST("/composition", handler.SubmitComposition)

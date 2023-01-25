@@ -6,7 +6,7 @@ INSERT INTO tracker.nutrition (
 )
 RETURNING *;
 
--- name: GetNutritionDetails :one
+-- name: GetNutrition :one
 SELECT * FROM tracker.nutrition
 WHERE SUBMITTED_ON = $1 LIMIT 1;
 

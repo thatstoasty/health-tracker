@@ -19,38 +19,28 @@ func (q *Queries) DeleteExercise(ctx context.Context, name string) error {
 	return err
 }
 
-const deleteExerciseDetails = `-- name: DeleteExerciseDetails :exec
-DELETE FROM tracker.exercise_details
-WHERE EXERCISE_NAME = $1
-`
-
-func (q *Queries) DeleteExerciseDetails(ctx context.Context, exerciseName string) error {
-	_, err := q.db.ExecContext(ctx, deleteExerciseDetails, exerciseName)
-	return err
-}
-
-const getExerciseDetails = `-- name: GetExerciseDetails :many
+const getExercise = `-- name: GetExercise :many
 SELECT a.name, b.body_part, b.level FROM tracker.exercise a
 JOIN tracker.exercise_details b
 ON a.name = b.exercise_name
 WHERE NAME = $1 LIMIT 1
 `
 
-type GetExerciseDetailsRow struct {
+type GetExerciseRow struct {
 	Name     string `json:"name"`
 	BodyPart string `json:"bodyPart"`
 	Level    string `json:"level"`
 }
 
-func (q *Queries) GetExerciseDetails(ctx context.Context, name string) ([]GetExerciseDetailsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getExerciseDetails, name)
+func (q *Queries) GetExercise(ctx context.Context, name string) ([]GetExerciseRow, error) {
+	rows, err := q.db.QueryContext(ctx, getExercise, name)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetExerciseDetailsRow
+	var items []GetExerciseRow
 	for rows.Next() {
-		var i GetExerciseDetailsRow
+		var i GetExerciseRow
 		if err := rows.Scan(&i.Name, &i.BodyPart, &i.Level); err != nil {
 			return nil, err
 		}

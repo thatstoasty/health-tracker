@@ -17,7 +17,3 @@ WHERE NAME = $1 LIMIT 1;
 -- name: DeleteWorkout :exec
 DELETE FROM tracker.workout
 WHERE NAME = $1;
-
--- name: DeleteWorkoutDetails :exec
-DELETE FROM tracker.workout_details
-WHERE WORKOUT_NAME = $1;

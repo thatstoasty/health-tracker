@@ -20,6 +20,27 @@ func (q *Queries) DeleteNutrition(ctx context.Context, submittedOn string) error
 	return err
 }
 
+const getNutrition = `-- name: GetNutrition :one
+SELECT submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
+WHERE SUBMITTED_ON = $1 LIMIT 1
+`
+
+func (q *Queries) GetNutrition(ctx context.Context, submittedOn string) (TrackerNutrition, error) {
+	row := q.db.QueryRowContext(ctx, getNutrition, submittedOn)
+	var i TrackerNutrition
+	err := row.Scan(
+		&i.SubmittedOn,
+		&i.Calories,
+		&i.Protein,
+		&i.Carbohydrate,
+		&i.Fat,
+		&i.Micronutrients,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
+	return i, err
+}
+
 const getNutritionDates = `-- name: GetNutritionDates :many
 SELECT SUBMITTED_ON FROM tracker.nutrition
 LIMIT $1
@@ -46,27 +67,6 @@ func (q *Queries) GetNutritionDates(ctx context.Context, limit int32) ([]string,
 		return nil, err
 	}
 	return items, nil
-}
-
-const getNutritionDetails = `-- name: GetNutritionDetails :one
-SELECT submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts FROM tracker.nutrition
-WHERE SUBMITTED_ON = $1 LIMIT 1
-`
-
-func (q *Queries) GetNutritionDetails(ctx context.Context, submittedOn string) (TrackerNutrition, error) {
-	row := q.db.QueryRowContext(ctx, getNutritionDetails, submittedOn)
-	var i TrackerNutrition
-	err := row.Scan(
-		&i.SubmittedOn,
-		&i.Calories,
-		&i.Protein,
-		&i.Carbohydrate,
-		&i.Fat,
-		&i.Micronutrients,
-		&i.CretTs,
-		&i.UpdtTs,
-	)
-	return i, err
 }
 
 const submitNutrition = `-- name: SubmitNutrition :one

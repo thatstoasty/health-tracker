@@ -20,16 +20,6 @@ func (q *Queries) DeleteWorkout(ctx context.Context, name string) error {
 	return err
 }
 
-const deleteWorkoutDetails = `-- name: DeleteWorkoutDetails :exec
-DELETE FROM tracker.workout_details
-WHERE WORKOUT_NAME = $1
-`
-
-func (q *Queries) DeleteWorkoutDetails(ctx context.Context, workoutName string) error {
-	_, err := q.db.ExecContext(ctx, deleteWorkoutDetails, workoutName)
-	return err
-}
-
 const deleteWorkoutPerformed = `-- name: DeleteWorkoutPerformed :exec
 DELETE FROM tracker.workout_performed
 WHERE SUBMITTED_ON = $1

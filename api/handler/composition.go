@@ -4,35 +4,19 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
 	"github.com/thatstoasty/health-tracker/queries"
+	"github.com/thatstoasty/health-tracker/utils"
 )
-
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "docker"
-	password = "docker"
-	dbname   = "docker"
-	sslmode  = "disable"
-  )
-
-func getConnectionString() string {
-	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-    host, port, user, password, dbname, sslmode)
-
-	return connectionString
-}
 
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
 	var requestBody queries.SubmitCompositionParams
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +46,7 @@ func SubmitComposition(c echo.Context) error {
 
 // Get composition entry details
 func GetComposition(c echo.Context) error {
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
@@ -86,7 +70,7 @@ func GetComposition(c echo.Context) error {
 
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
-	connectionString := getConnectionString()
+	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
