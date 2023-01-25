@@ -19,8 +19,8 @@ func SubmitComposition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -29,28 +29,31 @@ func SubmitComposition(c echo.Context) error {
 
 	// bind request body to variable given
 	if err := c.Bind(&requestBody); err != nil {
-		log.Fatal(err)
-		log.Fatal("Failed to bind request body to composition type")
+		log.Println(err)
+		log.Println("Failed to bind request body to composition type")
 		return c.String(http.StatusBadRequest, "Failed to bind request body to composition type")
 	}
+	log.Println(requestBody)
 
 	composition, err := queries.SubmitComposition(ctx, requestBody)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get composition details")
-		return c.String(http.StatusBadRequest, "failed to get composition details")
+		log.Println(composition)
+		log.Println(err)
+		log.Println("failed to post composition details")
+		return c.String(http.StatusBadRequest, "failed to post composition details")
 	}
 	log.Println(composition)
 
-	return c.JSON(http.StatusOK, composition)}
+	return c.JSON(http.StatusOK, composition)
+}
 
 // Get composition entry details
 func GetComposition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -60,8 +63,8 @@ func GetComposition(c echo.Context) error {
 
 	composition, err := queries.GetComposition(ctx, date)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get composition details")
+		log.Println(err)
+		log.Println("failed to get composition details")
 		return c.String(http.StatusBadRequest, "failed to get composition details")
 	}
 
@@ -73,8 +76,8 @@ func DeleteComposition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -84,8 +87,8 @@ func DeleteComposition(c echo.Context) error {
 
 	error := queries.DeleteComposition(ctx, date)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete composition")
+		log.Println(err)
+		log.Println("failed to delete composition")
 		return c.String(http.StatusBadRequest, "failed to delete composition")
 	}
 

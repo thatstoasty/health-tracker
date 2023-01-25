@@ -5,9 +5,7 @@ go 1.19
 require (
 	github.com/labstack/echo/v4 v4.10.0
 	github.com/lib/pq v1.10.7
-	github.com/shopspring/decimal v1.3.1
 	github.com/tabbed/pqtype v0.1.1
-	gopkg.in/guregu/null.v3 v3.5.0
 )
 
 require (

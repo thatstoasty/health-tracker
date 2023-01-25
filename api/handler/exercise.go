@@ -19,8 +19,8 @@ func GetExercise(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -30,8 +30,8 @@ func GetExercise(c echo.Context) error {
 
 	composition, err := queries.GetExercise(ctx, exercise)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get exercise details")
+		log.Println(err)
+		log.Println("failed to get exercise details")
 		return c.String(http.StatusBadRequest, "failed to get exercise details")
 	}
 
@@ -43,8 +43,8 @@ func GetExerciseNames(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -53,16 +53,16 @@ func GetExerciseNames(c echo.Context) error {
 	limitString := c.QueryParam("limit")
 
 	limit, err := strconv.Atoi(limitString)
-    if err != nil {
-        log.Fatal(err)
-		log.Fatal("failed to convert to int")
+	if err != nil {
+		log.Println(err)
+		log.Println("failed to convert to int")
 		return c.String(http.StatusBadRequest, "failed to convert to int")
-    }
+	}
 
 	exerciseNames, err := queries.GetExercises(ctx, int32(limit))
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get exercise names")
+		log.Println(err)
+		log.Println("failed to get exercise names")
 		return c.String(http.StatusBadRequest, "failed to get exercise names")
 	}
 
@@ -74,8 +74,8 @@ func DeleteExercise(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -85,8 +85,8 @@ func DeleteExercise(c echo.Context) error {
 
 	error := queries.DeleteExercise(ctx, name)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete exercise")
+		log.Println(err)
+		log.Println("failed to delete exercise")
 		return c.String(http.StatusBadRequest, "failed to delete exercise")
 	}
 

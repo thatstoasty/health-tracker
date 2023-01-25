@@ -19,8 +19,8 @@ func GetProgram(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -30,8 +30,8 @@ func GetProgram(c echo.Context) error {
 
 	composition, err := queries.GetProgram(ctx, name)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get program details")
+		log.Println(err)
+		log.Println("failed to get program details")
 		return c.String(http.StatusBadRequest, "failed to get program details")
 	}
 
@@ -43,8 +43,8 @@ func GetProgramNames(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -52,16 +52,16 @@ func GetProgramNames(c echo.Context) error {
 	ctx := context.Background()
 	limitString := c.QueryParam("limit")
 	limit, err := strconv.Atoi(limitString)
-    if err != nil {
-        log.Fatal(err)
-		log.Fatal("failed to convert to int")
+	if err != nil {
+		log.Println(err)
+		log.Println("failed to convert to int")
 		return c.String(http.StatusBadRequest, "failed to convert to int")
-    }
+	}
 
 	composition, err := queries.GetProgramNames(ctx, int32(limit))
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get workout")
+		log.Println(err)
+		log.Println("failed to get workout")
 		return c.String(http.StatusBadRequest, "failed to get workout")
 	}
 
@@ -73,8 +73,8 @@ func DeleteProgram(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -84,8 +84,8 @@ func DeleteProgram(c echo.Context) error {
 
 	error := queries.DeleteProgram(ctx, name)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete program")
+		log.Println(err)
+		log.Println("failed to delete program")
 		return c.String(http.StatusBadRequest, "failed to delete program")
 	}
 

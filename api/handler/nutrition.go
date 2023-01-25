@@ -19,8 +19,8 @@ func SubmitNutrition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -29,15 +29,15 @@ func SubmitNutrition(c echo.Context) error {
 
 	// bind request body to variable given
 	if err := c.Bind(&requestBody); err != nil {
-		log.Fatal(err)
-		log.Fatal("Failed to bind request body to nutrition type")
+		log.Println(err)
+		log.Println("Failed to bind request body to nutrition type")
 		return c.String(http.StatusBadRequest, "Failed to bind request body to nutrition type")
 	}
 
 	nutrition, err := queries.SubmitNutrition(ctx, requestBody)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get nutrition details")
+		log.Println(err)
+		log.Println("failed to get nutrition details")
 		return c.String(http.StatusBadRequest, "failed to get nutrition details")
 	}
 	log.Println(nutrition)
@@ -50,8 +50,8 @@ func GetNutrition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -61,8 +61,8 @@ func GetNutrition(c echo.Context) error {
 
 	nutrition, err := queries.GetNutrition(ctx, date)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get nutrition details")
+		log.Println(err)
+		log.Println("failed to get nutrition details")
 		return c.String(http.StatusBadRequest, "failed to get nutrition details")
 	}
 
@@ -74,8 +74,8 @@ func DeleteNutrition(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -85,8 +85,8 @@ func DeleteNutrition(c echo.Context) error {
 
 	error := queries.DeleteNutrition(ctx, date)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete nutrition entry")
+		log.Println(err)
+		log.Println("failed to delete nutrition entry")
 		return c.String(http.StatusBadRequest, "failed to delete nutrition entry")
 	}
 

@@ -13,25 +13,25 @@ import (
 )
 
 type TrackerComposition struct {
-	SubmittedOn  string         `json:"submittedOn"`
-	Weight       string         `json:"weight"`
-	Bodyfat      string         `json:"bodyfat"`
-	Neck         types.NullString `json:"neck"`
-	Shoulders    types.NullString `json:"shoulders"`
-	LeftBicep    types.NullString `json:"leftBicep"`
-	RightBicep   types.NullString `json:"rightBicep"`
-	LeftTricep   types.NullString `json:"leftTricep"`
-	RightTricep  types.NullString `json:"rightTricep"`
-	LeftForearm  types.NullString `json:"leftForearm"`
-	RightForearm types.NullString `json:"rightForearm"`
-	Chest        types.NullString `json:"chest"`
-	Waist        types.NullString `json:"waist"`
-	LeftQuad     types.NullString `json:"leftQuad"`
-	RightQuad    types.NullString `json:"rightQuad"`
-	LeftCalf     types.NullString `json:"leftCalf"`
-	RightCalf    types.NullString `json:"rightCalf"`
-	CretTs       time.Time      `json:"-"`
-	UpdtTs       time.Time      `json:"-"`
+	SubmittedOn  string `json:"date"`
+	Weight       string `json:"weight"`
+	Bodyfat      string `json:"bodyfat"`
+	Neck         types.NullString `json:"neck,omitempty"`
+	Shoulders    types.NullString `json:"shoulders,omitempty"`
+	LeftBicep    types.NullString `json:"leftBicep,omitempty"`
+	RightBicep   types.NullString `json:"rightBicep,omitempty"`
+	LeftTricep   types.NullString `json:"leftTricep,omitempty"`
+	RightTricep  types.NullString `json:"rightTricep,omitempty"`
+	LeftForearm  types.NullString `json:"leftForearm,omitempty"`
+	RightForearm types.NullString `json:"rightForearm,omitempty"`
+	Chest        types.NullString `json:"chest,omitempty"`
+	Waist        types.NullString `json:"waist,omitempty"`
+	LeftQuad     types.NullString `json:"leftQuad,omitempty"`
+	RightQuad    types.NullString `json:"rightQuad,omitempty"`
+	LeftCalf     types.NullString `json:"leftCalf,omitempty"`
+	RightCalf    types.NullString `json:"rightCalf,omitempty"`
+	CretTs       sql.NullTime `json:"-"`
+	UpdtTs       sql.NullTime `json:"-"`
 }
 
 type TrackerExercise struct {

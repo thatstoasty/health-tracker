@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
@@ -20,8 +20,8 @@ func GetWorkout(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -31,8 +31,8 @@ func GetWorkout(c echo.Context) error {
 
 	composition, err := queries.GetWorkout(ctx, name)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get workout")
+		log.Println(err)
+		log.Println("failed to get workout")
 		return c.String(http.StatusBadRequest, "failed to get workout")
 	}
 
@@ -44,8 +44,8 @@ func GetWorkoutPerformed(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -54,15 +54,15 @@ func GetWorkoutPerformed(c echo.Context) error {
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to parse date")
+		log.Println(err)
+		log.Println("failed to parse date")
 		return c.String(http.StatusBadRequest, "failed to parse date")
 	}
 
 	workoutPerformed, err := queries.GetWorkoutPerformed(ctx, date)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get workout")
+		log.Println(err)
+		log.Println("failed to get workout")
 		return c.String(http.StatusBadRequest, "failed to get workout")
 	}
 
@@ -74,8 +74,8 @@ func GetWorkoutNames(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -84,30 +84,29 @@ func GetWorkoutNames(c echo.Context) error {
 	limitString := c.QueryParam("limit")
 
 	limit, err := strconv.Atoi(limitString)
-    if err != nil {
-        log.Fatal(err)
-		log.Fatal("failed to convert to int")
+	if err != nil {
+		log.Println(err)
+		log.Println("failed to convert to int")
 		return c.String(http.StatusBadRequest, "failed to convert to int")
-    }
+	}
 
 	workoutNames, err := queries.GetWorkoutNames(ctx, int32(limit))
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to get workout")
+		log.Println(err)
+		log.Println("failed to get workout")
 		return c.String(http.StatusBadRequest, "failed to get workout")
 	}
 
 	return c.JSON(http.StatusOK, workoutNames)
 }
 
-
 // Delete workout
 func DeleteWorkout(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -117,8 +116,8 @@ func DeleteWorkout(c echo.Context) error {
 
 	error := queries.DeleteWorkout(ctx, name)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete workout")
+		log.Println(err)
+		log.Println("failed to delete workout")
 		return c.String(http.StatusBadRequest, "failed to delete workout")
 	}
 
@@ -130,8 +129,8 @@ func DeleteWorkoutPerformed(c echo.Context) error {
 	connectionString := utils.GetConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to establish connection to postgres")
+		log.Println(err)
+		log.Println("failed to establish connection to postgres")
 		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
 	}
 
@@ -140,15 +139,15 @@ func DeleteWorkoutPerformed(c echo.Context) error {
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)
 	if err != nil {
-		log.Fatal(err)
-		log.Fatal("failed to parse date")
+		log.Println(err)
+		log.Println("failed to parse date")
 		return c.String(http.StatusBadRequest, "failed to parse date")
 	}
 
 	error := queries.DeleteWorkoutPerformed(ctx, date)
 	if error != nil {
-		log.Fatal(err)
-		log.Fatal("failed to delete workout performed")
+		log.Println(err)
+		log.Println("failed to delete workout performed")
 		return c.String(http.StatusBadRequest, "failed to workout performed")
 	}
 
