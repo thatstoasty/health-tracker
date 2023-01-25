@@ -2,8 +2,7 @@ package handler
 
 import (
 	"context"
-	"database/sql"
-	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,14 +13,11 @@ import (
 	"github.com/thatstoasty/health-tracker/utils"
 )
 
-// Get program
+// Get Program
 func GetProgram(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -30,22 +26,17 @@ func GetProgram(c echo.Context) error {
 
 	composition, err := queries.GetProgram(ctx, name)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get program details")
-		return c.String(http.StatusBadRequest, "failed to get program details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Program: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, composition)
 }
 
-// Get workout names
+// Get Program names
 func GetProgramNames(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -53,29 +44,22 @@ func GetProgramNames(c echo.Context) error {
 	limitString := c.QueryParam("limit")
 	limit, err := strconv.Atoi(limitString)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to convert to int")
-		return c.String(http.StatusBadRequest, "failed to convert to int")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to convert limit to integer: %s", err)})
 	}
 
 	composition, err := queries.GetProgramNames(ctx, int32(limit))
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get workout")
-		return c.String(http.StatusBadRequest, "failed to get workout")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Program names: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, composition)
 }
 
-// Delete program
+// Delete Program
 func DeleteProgram(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -84,10 +68,8 @@ func DeleteProgram(c echo.Context) error {
 
 	error := queries.DeleteProgram(ctx, name)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete program")
-		return c.String(http.StatusBadRequest, "failed to delete program")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete Program: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "program deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Program: %s", name)})
 }

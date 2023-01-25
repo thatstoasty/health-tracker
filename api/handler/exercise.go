@@ -2,8 +2,7 @@ package handler
 
 import (
 	"context"
-	"database/sql"
-	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -16,36 +15,28 @@ import (
 
 // Get exercise details
 func GetExercise(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
 	ctx := context.Background()
-	exercise := c.Param("exercise")
+	name := c.Param("name")
 
-	composition, err := queries.GetExercise(ctx, exercise)
+	exercise, err := queries.GetExercise(ctx, name)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get exercise details")
-		return c.String(http.StatusBadRequest, "failed to get exercise details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Exercise: %s", err)})
 	}
 
-	return c.JSON(http.StatusOK, composition)
+	return c.JSON(http.StatusOK, exercise)
 }
 
 // Get exercise names
 func GetExerciseNames(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -54,16 +45,12 @@ func GetExerciseNames(c echo.Context) error {
 
 	limit, err := strconv.Atoi(limitString)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to convert to int")
-		return c.String(http.StatusBadRequest, "failed to convert to int")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to convert limit to integer: %s", err)})
 	}
 
 	exerciseNames, err := queries.GetExercises(ctx, int32(limit))
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get exercise names")
-		return c.String(http.StatusBadRequest, "failed to get exercise names")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Exercise names: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, exerciseNames)
@@ -71,12 +58,9 @@ func GetExerciseNames(c echo.Context) error {
 
 // Delete program
 func DeleteExercise(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -85,10 +69,8 @@ func DeleteExercise(c echo.Context) error {
 
 	error := queries.DeleteExercise(ctx, name)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete exercise")
-		return c.String(http.StatusBadRequest, "failed to delete exercise")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete Exercise: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "exercise deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Exercise: %s", name)})
 }

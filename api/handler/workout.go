@@ -2,8 +2,7 @@ package handler
 
 import (
 	"context"
-	"database/sql"
-	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -17,36 +16,28 @@ import (
 
 // Get workout
 func GetWorkout(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
-	composition, err := queries.GetWorkout(ctx, name)
+	workout, err := queries.GetWorkout(ctx, name)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get workout")
-		return c.String(http.StatusBadRequest, "failed to get workout")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Workout: %s", err)})
 	}
 
-	return c.JSON(http.StatusOK, composition)
+	return c.JSON(http.StatusOK, workout)
 }
 
 // Get workout performed
 func GetWorkoutPerformed(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -54,29 +45,21 @@ func GetWorkoutPerformed(c echo.Context) error {
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to parse date")
-		return c.String(http.StatusBadRequest, "failed to parse date")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to parse string to date: %s", err)})
 	}
 
 	workoutPerformed, err := queries.GetWorkoutPerformed(ctx, date)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get workout")
-		return c.String(http.StatusBadRequest, "failed to get workout")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Workout performed: %s", err)})
 	}
-
 	return c.JSON(http.StatusOK, workoutPerformed)
 }
 
 // Get workout names
 func GetWorkoutNames(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -85,16 +68,12 @@ func GetWorkoutNames(c echo.Context) error {
 
 	limit, err := strconv.Atoi(limitString)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to convert to int")
-		return c.String(http.StatusBadRequest, "failed to convert to int")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to convert limit to integer: %s", err)})
 	}
 
 	workoutNames, err := queries.GetWorkoutNames(ctx, int32(limit))
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get workout")
-		return c.String(http.StatusBadRequest, "failed to get workout")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Workout names: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, workoutNames)
@@ -102,12 +81,9 @@ func GetWorkoutNames(c echo.Context) error {
 
 // Delete workout
 func DeleteWorkout(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -116,22 +92,17 @@ func DeleteWorkout(c echo.Context) error {
 
 	error := queries.DeleteWorkout(ctx, name)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete workout")
-		return c.String(http.StatusBadRequest, "failed to delete workout")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete Workout: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "workout deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Workout: %s", name)})
 }
 
 // Delete workout
 func DeleteWorkoutPerformed(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -139,17 +110,13 @@ func DeleteWorkoutPerformed(c echo.Context) error {
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to parse date")
-		return c.String(http.StatusBadRequest, "failed to parse date")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to parse string to date: %s", err)})
 	}
 
 	error := queries.DeleteWorkoutPerformed(ctx, date)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete workout performed")
-		return c.String(http.StatusBadRequest, "failed to workout performed")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete Workout performed: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "workout performed deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Workout performed on: %s", date)})
 }

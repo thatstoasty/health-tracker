@@ -2,8 +2,7 @@ package handler
 
 import (
 	"context"
-	"database/sql"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -16,12 +15,9 @@ import (
 // Submit nutrition entry
 func SubmitNutrition(c echo.Context) error {
 	var requestBody queries.SubmitNutritionParams
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -29,30 +25,22 @@ func SubmitNutrition(c echo.Context) error {
 
 	// bind request body to variable given
 	if err := c.Bind(&requestBody); err != nil {
-		log.Println(err)
-		log.Println("Failed to bind request body to nutrition type")
-		return c.String(http.StatusBadRequest, "Failed to bind request body to nutrition type")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to bind request body to Nutrition type: %s", err)})
 	}
 
 	nutrition, err := queries.SubmitNutrition(ctx, requestBody)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get nutrition details")
-		return c.String(http.StatusBadRequest, "failed to get nutrition details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to post Nutrition entry: %s", err)})
 	}
-	log.Println(nutrition)
 
 	return c.JSON(http.StatusOK, nutrition)
 }
 
 // Get nutrition entry details
 func GetNutrition(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -61,9 +49,7 @@ func GetNutrition(c echo.Context) error {
 
 	nutrition, err := queries.GetNutrition(ctx, date)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get nutrition details")
-		return c.String(http.StatusBadRequest, "failed to get nutrition details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get Nutrition entry: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, nutrition)
@@ -71,12 +57,9 @@ func GetNutrition(c echo.Context) error {
 
 // Delete nutrition entry
 func DeleteNutrition(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -85,10 +68,8 @@ func DeleteNutrition(c echo.Context) error {
 
 	error := queries.DeleteNutrition(ctx, date)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete nutrition entry")
-		return c.String(http.StatusBadRequest, "failed to delete nutrition entry")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete Nutrition entry: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "Nutrition entry deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Nutrition entry submitted on: %s", date)})
 }

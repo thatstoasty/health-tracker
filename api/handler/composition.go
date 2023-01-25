@@ -2,8 +2,7 @@ package handler
 
 import (
 	"context"
-	"database/sql"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,15 +12,16 @@ import (
 	"github.com/thatstoasty/health-tracker/utils"
 )
 
+type GenericResponse struct {
+	message string
+}
+
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
 	var requestBody queries.SubmitCompositionParams
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -29,32 +29,22 @@ func SubmitComposition(c echo.Context) error {
 
 	// bind request body to variable given
 	if err := c.Bind(&requestBody); err != nil {
-		log.Println(err)
-		log.Println("Failed to bind request body to composition type")
-		return c.String(http.StatusBadRequest, "Failed to bind request body to composition type")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to bind request body to composition type: %s", err)})
 	}
-	log.Println(requestBody)
 
 	composition, err := queries.SubmitComposition(ctx, requestBody)
 	if err != nil {
-		log.Println(composition)
-		log.Println(err)
-		log.Println("failed to post composition details")
-		return c.String(http.StatusBadRequest, "failed to post composition details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to post composition details: %s", err)})
 	}
-	log.Println(composition)
 
 	return c.JSON(http.StatusOK, composition)
 }
 
 // Get composition entry details
 func GetComposition(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -63,9 +53,7 @@ func GetComposition(c echo.Context) error {
 
 	composition, err := queries.GetComposition(ctx, date)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to get composition details")
-		return c.String(http.StatusBadRequest, "failed to get composition details")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to get composition details: %s", err)})
 	}
 
 	return c.JSON(http.StatusOK, composition)
@@ -73,12 +61,9 @@ func GetComposition(c echo.Context) error {
 
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
-	connectionString := utils.GetConnectionString()
-	db, err := sql.Open("postgres", connectionString)
+	db, err := utils.GetDBConnection(c)
 	if err != nil {
-		log.Println(err)
-		log.Println("failed to establish connection to postgres")
-		return c.String(http.StatusBadRequest, "failed to establish connection to postgres")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
 	queries := queries.New(db)
@@ -87,10 +72,8 @@ func DeleteComposition(c echo.Context) error {
 
 	error := queries.DeleteComposition(ctx, date)
 	if error != nil {
-		log.Println(err)
-		log.Println("failed to delete composition")
-		return c.String(http.StatusBadRequest, "failed to delete composition")
+		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to delete composition: %s", error)})
 	}
 
-	return c.String(http.StatusOK, "Composition deleted.")
+	return c.JSON(http.StatusOK, GenericResponse{fmt.Sprintf("Successfully deleted Composition submitted on: %s", date)})
 }
