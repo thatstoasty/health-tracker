@@ -13,7 +13,7 @@ import (
 )
 
 // getCmd represents the get command
-var getCmd = &cobra.Command{
+var getTrainingWeight = &cobra.Command{
 	Use:   "get-training-weight",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -42,14 +42,54 @@ to quickly create a Cobra application.`,
 
 		rirMapping := reference.GetRIRMapping()
 		weightTable := reference.GetWeightTable()
+		percentage := weightTable[reps-1][rirMapping[rir]]
+		trainingWeight := fmt.Sprintf("%.2f", weight * percentage)
 
-		fmt.Println(weight * weightTable[reps-1][rirMapping[rir]])
-		fmt.Println("get called")
+		fmt.Printf("Percentage: %v", percentage * 100)
+		fmt.Printf("\nTraining Weight: %v", trainingWeight)
+	},
+}
+
+var getTrainingMax = &cobra.Command{
+	Use:   "get-training-max",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		repsInput := args[0]
+		rirInput := args[1]
+		weightInput := args[2]
+
+		reps, err := strconv.Atoi(repsInput)
+		if err != nil {
+			panic(err)
+		}
+		rir, err := strconv.ParseFloat(rirInput, 64)
+		if err != nil {
+			panic(err)
+		}
+		weight, err := strconv.ParseFloat(weightInput, 64)
+		if err != nil {
+			panic(err)
+		}
+
+		rirMapping := reference.GetRIRMapping()
+		weightTable := reference.GetWeightTable()
+		percentage := weightTable[reps-1][rirMapping[rir]]
+		trainingMax := fmt.Sprintf("%.2f", weight / percentage)
+
+		fmt.Printf("Percentage: %v", percentage * 100)
+		fmt.Printf("\nTraining Max: %v", trainingMax)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(getCmd)
+	rootCmd.AddCommand(getTrainingWeight)
+	rootCmd.AddCommand(getTrainingMax)
 
 	// Here you will define your flags and configuration settings.
 

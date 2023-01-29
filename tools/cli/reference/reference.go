@@ -3,7 +3,7 @@ package reference
 func GetRIRMapping() map[float64]int {
 	// Generate mapping of RIR:Array Index
 	rirMapping := make(map[float64]int)
-	for i, j := 0.0, 0; i < 4.5; i, j = i + 0.5, j + 1{
+	for i, j := 0.0, 0; i < 5.5; i, j = i + 0.5, j + 1{
 		rirMapping[i] = j
 	}
 
