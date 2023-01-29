@@ -13,7 +13,7 @@ import (
 )
 
 type GenericResponse struct {
-	message string
+	Message string `json:"message"`
 }
 
 // Submit composition entry
