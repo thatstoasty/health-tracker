@@ -1,4 +1,4 @@
-module github.com/thatstoasty/health-tracker
+module github.com/thatstoasty/health-tracker/api
 
 go 1.19
 

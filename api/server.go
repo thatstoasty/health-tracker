@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/thatstoasty/health-tracker/handler"
+	"github.com/thatstoasty/health-tracker/api/handler"
 )
 
 func main() {

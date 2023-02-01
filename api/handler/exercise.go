@@ -9,8 +9,8 @@ import (
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
-	"github.com/thatstoasty/health-tracker/queries"
-	"github.com/thatstoasty/health-tracker/utils"
+	"github.com/thatstoasty/health-tracker/shared/queries"
+	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
 // Get exercise details

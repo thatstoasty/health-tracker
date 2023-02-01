@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/thatstoasty/health-tracker/tools/cli/reference"
+	"github.com/thatstoasty/health-tracker/cli/utils"
 )
 
 // getCmd represents the get command
@@ -40,8 +40,8 @@ to quickly create a Cobra application.`,
 			panic(err)
 		}
 
-		rirMapping := reference.GetRIRMapping()
-		weightTable := reference.GetWeightTable()
+		rirMapping := utils.GetRIRMapping()
+		weightTable := utils.GetWeightTable()
 		percentage := weightTable[reps-1][rirMapping[rir]]
 		trainingWeight := fmt.Sprintf("%.2f", weight * percentage)
 
@@ -77,8 +77,8 @@ to quickly create a Cobra application.`,
 			panic(err)
 		}
 
-		rirMapping := reference.GetRIRMapping()
-		weightTable := reference.GetWeightTable()
+		rirMapping := utils.GetRIRMapping()
+		weightTable := utils.GetWeightTable()
 		percentage := weightTable[reps-1][rirMapping[rir]]
 		trainingMax := fmt.Sprintf("%.2f", weight / percentage)
 

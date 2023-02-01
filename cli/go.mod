@@ -1,4 +1,4 @@
-module github.com/thatstoasty/health-tracker/tools/cli
+module github.com/thatstoasty/health-tracker/cli
 
 go 1.19
 

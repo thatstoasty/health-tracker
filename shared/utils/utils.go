@@ -1,0 +1,90 @@
+package utils
+
+import (
+	"fmt"
+	"database/sql"
+	"encoding/csv"
+	"os"
+	"log"
+
+	"github.com/labstack/echo/v4"
+)
+
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "docker"
+	password = "docker"
+	dbname   = "docker"
+	sslmode  = "disable"
+)
+
+func getConnectionString() string {
+	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+    host, port, user, password, dbname, sslmode)
+
+	return connectionString
+}
+
+func GetDBConnection(c echo.Context) (*sql.DB, error) {
+	connectionString := getConnectionString()
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func GetRIRMapping() map[float64]int {
+	// Generate mapping of RIR:Array Index
+	rirMapping := make(map[float64]int)
+	for i, j := 0.0, 0; i < 5.5; i, j = i + 0.5, j + 1{
+		rirMapping[i] = j
+	}
+
+	return rirMapping
+}
+
+func GetWeightTable() [][]float64 {
+	// x: 0 -> 4 RIR
+	// y: 1 -> 10 Reps
+	table := [][]float64 {
+		{1.0, 0.978, 0.955, 0.939, 0.922, 0.907, 0.892, 0.878, 0.863, 0.85, 0.837},
+		{0.955, 0.939, 0.922, 0.907, 0.892, 0.878, 0.863, 0.85, 0.837, 0.824, 0.811},
+		{0.922, 0.907, 0.892, 0.878, 0.863, 0.85, 0.837, 0.824, 0.811, 0.799, 0.786},
+		{0.892, 0.878, 0.863, 0.85, 0.837, 0.824, 0.811, 0.799, 0.786, 0.774, 0.762},
+		{0.863, 0.85, 0.837, 0.824, 0.811, 0.799, 0.786, 0.774, 0.762, 0.751, 0.739},
+		{0.837, 0.824, 0.811, 0.799, 0.786, 0.774, 0.762, 0.751, 0.739, 0.723, 0.707},
+		{0.811, 0.799, 0.786, 0.774, 0.762, 0.751, 0.739, 0.723, 0.707, 0.694, 0.68},
+		{0.786, 0.774, 0.762, 0.751, 0.739, 0.723, 0.707, 0.694, 0.68, 0.667, 0.653},
+		{0.762, 0.751, 0.739, 0.723, 0.707, 0.694, 0.68, 0.667, 0.653, 0.64, 0.626},
+		{0.739, 0.723, 0.707, 0.694, 0.68, 0.667, 0.653, 0.64, 0.626, 0.613, 0.599},
+	}
+
+	return table
+}
+
+func ParseCompositionFile(path string) {
+    // open file
+    f, err := os.Open(path)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // remember to close the file at the end of the program
+    defer f.Close()
+
+    // read csv values using csv.Reader
+    csvReader := csv.NewReader(f)
+    data, err := csvReader.ReadAll()
+    if err != nil {
+        log.Fatal(err)
+    }
+	fmt.Println(data)
+    // convert records to array of structs
+    //shoppingList := createShoppingList(data)
+
+    // print the array
+    //fmt.Printf("%+v\n", shoppingList)
+}
