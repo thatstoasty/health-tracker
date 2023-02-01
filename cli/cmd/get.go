@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/thatstoasty/health-tracker/cli/utils"
+	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
 // getCmd represents the get command

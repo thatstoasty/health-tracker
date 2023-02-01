@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/tabbed/pqtype"
-	"github.com/thatstoasty/health-tracker/types"
+	"github.com/thatstoasty/health-tracker/shared/types"
 )
 
 type TrackerComposition struct {
