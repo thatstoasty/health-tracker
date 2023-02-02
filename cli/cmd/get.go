@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -8,8 +7,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/spf13/cobra"
 	"github.com/thatstoasty/health-tracker/shared/utils"
+
+	"github.com/spf13/cobra"
 )
 
 // getCmd represents the get command
@@ -43,9 +43,9 @@ to quickly create a Cobra application.`,
 		rirMapping := utils.GetRIRMapping()
 		weightTable := utils.GetWeightTable()
 		percentage := weightTable[reps-1][rirMapping[rir]]
-		trainingWeight := fmt.Sprintf("%.2f", weight * percentage)
+		trainingWeight := fmt.Sprintf("%.2f", weight*percentage)
 
-		fmt.Printf("Percentage: %v", percentage * 100)
+		fmt.Printf("Percentage: %v", percentage*100)
 		fmt.Printf("\nTraining Weight: %v", trainingWeight)
 	},
 }
@@ -80,9 +80,9 @@ to quickly create a Cobra application.`,
 		rirMapping := utils.GetRIRMapping()
 		weightTable := utils.GetWeightTable()
 		percentage := weightTable[reps-1][rirMapping[rir]]
-		trainingMax := fmt.Sprintf("%.2f", weight / percentage)
+		trainingMax := fmt.Sprintf("%.2f", weight/percentage)
 
-		fmt.Printf("Percentage: %v", percentage * 100)
+		fmt.Printf("Percentage: %v", percentage*100)
 		fmt.Printf("\nTraining Max: %v", trainingMax)
 	},
 }

@@ -1,12 +1,12 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/thatstoasty/health-tracker/shared/utils"
+
+	"github.com/spf13/cobra"
 )
 
 // getCmd represents the get command
