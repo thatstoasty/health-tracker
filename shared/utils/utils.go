@@ -3,11 +3,7 @@ package utils
 import (
 	"fmt"
 	"database/sql"
-	"encoding/csv"
-	"os"
-	"log"
-
-	"github.com/labstack/echo/v4"
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -26,7 +22,7 @@ func getConnectionString() string {
 	return connectionString
 }
 
-func GetDBConnection(c echo.Context) (*sql.DB, error) {
+func GetDBConnection() (*sql.DB, error) {
 	connectionString := getConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
@@ -63,28 +59,4 @@ func GetWeightTable() [][]float64 {
 	}
 
 	return table
-}
-
-func ParseCompositionFile(path string) {
-    // open file
-    f, err := os.Open(path)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // remember to close the file at the end of the program
-    defer f.Close()
-
-    // read csv values using csv.Reader
-    csvReader := csv.NewReader(f)
-    data, err := csvReader.ReadAll()
-    if err != nil {
-        log.Fatal(err)
-    }
-	fmt.Println(data)
-    // convert records to array of structs
-    //shoppingList := createShoppingList(data)
-
-    // print the array
-    //fmt.Printf("%+v\n", shoppingList)
 }

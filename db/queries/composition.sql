@@ -1,8 +1,8 @@
 -- name: SubmitComposition :one
 INSERT INTO tracker.composition (
-  WEIGHT, BODYFAT
+  SUBMITTED_ON, WEIGHT, BODYFAT
 ) VALUES (
-  $1, $2
+  $1, $2, $3
 )
 RETURNING *;
 

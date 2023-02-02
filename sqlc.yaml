@@ -6,6 +6,6 @@ sql:
     gen:
       go:
         package: "queries"
-        out: "api/queries"
+        out: "shared/queries"
         emit_json_tags: true
         json_tags_case_style: "camel"

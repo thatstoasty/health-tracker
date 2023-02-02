@@ -15,7 +15,7 @@ import (
 // Submit nutrition entry
 func SubmitNutrition(c echo.Context) error {
 	var requestBody queries.SubmitNutritionParams
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -38,7 +38,7 @@ func SubmitNutrition(c echo.Context) error {
 
 // Get nutrition entry details
 func GetNutrition(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -57,7 +57,7 @@ func GetNutrition(c echo.Context) error {
 
 // Delete nutrition entry
 func DeleteNutrition(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}

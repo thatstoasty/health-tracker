@@ -4,6 +4,12 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/thatstoasty/health-tracker/cli/load"
+	"github.com/thatstoasty/health-tracker/shared/queries"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 
 	"github.com/spf13/cobra"
@@ -21,7 +27,26 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		path := args[0]
-		utils.ParseCompositionFile(path)
+		records := load.GetRecordsFromFile(path)
+		fmt.Println(records)
+		list := load.CreateCompositionList(records)
+		fmt.Printf("%+v\n", list)
+
+		db, err := utils.GetDBConnection()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queries := queries.New(db)
+		ctx := context.Background()
+
+		for _, entry := range list {
+			composition, err := queries.SubmitComposition(ctx, entry)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println(composition)
+		}
 	},
 }
 

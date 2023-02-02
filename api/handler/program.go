@@ -15,7 +15,7 @@ import (
 
 // Get Program
 func GetProgram(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -34,7 +34,7 @@ func GetProgram(c echo.Context) error {
 
 // Get Program names
 func GetProgramNames(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -57,7 +57,7 @@ func GetProgramNames(c echo.Context) error {
 
 // Delete Program
 func DeleteProgram(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}

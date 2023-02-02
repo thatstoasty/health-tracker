@@ -16,7 +16,7 @@ import (
 
 // Get workout
 func GetWorkout(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -35,7 +35,7 @@ func GetWorkout(c echo.Context) error {
 
 // Get workout performed
 func GetWorkoutPerformed(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -57,7 +57,7 @@ func GetWorkoutPerformed(c echo.Context) error {
 
 // Get workout names
 func GetWorkoutNames(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -81,7 +81,7 @@ func GetWorkoutNames(c echo.Context) error {
 
 // Delete workout
 func DeleteWorkout(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -100,7 +100,7 @@ func DeleteWorkout(c echo.Context) error {
 
 // Delete workout
 func DeleteWorkoutPerformed(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}

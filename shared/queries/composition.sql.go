@@ -81,20 +81,21 @@ func (q *Queries) GetCompositionDates(ctx context.Context, limit int32) ([]strin
 
 const submitComposition = `-- name: SubmitComposition :one
 INSERT INTO tracker.composition (
-  WEIGHT, BODYFAT
+  SUBMITTED_ON, WEIGHT, BODYFAT
 ) VALUES (
-  $1, $2
+  $1, $2, $3
 )
 RETURNING submitted_on, weight, bodyfat, neck, shoulders, left_bicep, right_bicep, left_tricep, right_tricep, left_forearm, right_forearm, chest, waist, left_quad, right_quad, left_calf, right_calf, cret_ts, updt_ts
 `
 
 type SubmitCompositionParams struct {
-	Weight  string `json:"weight"`
-	Bodyfat string `json:"bodyfat"`
+	SubmittedOn string `json:"submittedOn"`
+	Weight      string `json:"weight"`
+	Bodyfat     string `json:"bodyfat"`
 }
 
 func (q *Queries) SubmitComposition(ctx context.Context, arg SubmitCompositionParams) (TrackerComposition, error) {
-	row := q.db.QueryRowContext(ctx, submitComposition, arg.Weight, arg.Bodyfat)
+	row := q.db.QueryRowContext(ctx, submitComposition, arg.SubmittedOn, arg.Weight, arg.Bodyfat)
 	var i TrackerComposition
 	err := row.Scan(
 		&i.SubmittedOn,

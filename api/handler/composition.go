@@ -19,7 +19,7 @@ type GenericResponse struct {
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
 	var requestBody queries.SubmitCompositionParams
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -42,7 +42,7 @@ func SubmitComposition(c echo.Context) error {
 
 // Get composition entry details
 func GetComposition(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
@@ -61,7 +61,7 @@ func GetComposition(c echo.Context) error {
 
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
-	db, err := utils.GetDBConnection(c)
+	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
