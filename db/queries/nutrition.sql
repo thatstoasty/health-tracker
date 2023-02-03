@@ -1,8 +1,8 @@
 -- name: SubmitNutrition :one
 INSERT INTO tracker.nutrition (
-  CALORIES, PROTEIN, CARBOHYDRATE, FAT
+  SUBMITTED_ON, CALORIES, PROTEIN, CARBOHYDRATE, FAT
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3, $4, $5
 )
 RETURNING *;
 

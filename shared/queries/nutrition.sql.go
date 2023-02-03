@@ -71,14 +71,15 @@ func (q *Queries) GetNutritionDates(ctx context.Context, limit int32) ([]string,
 
 const submitNutrition = `-- name: SubmitNutrition :one
 INSERT INTO tracker.nutrition (
-  CALORIES, PROTEIN, CARBOHYDRATE, FAT
+  SUBMITTED_ON, CALORIES, PROTEIN, CARBOHYDRATE, FAT
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3, $4, $5
 )
 RETURNING submitted_on, calories, protein, carbohydrate, fat, micronutrients, cret_ts, updt_ts
 `
 
 type SubmitNutritionParams struct {
+	SubmittedOn  string        `json:"submittedOn"`
 	Calories     int16         `json:"calories"`
 	Protein      sql.NullInt16 `json:"protein"`
 	Carbohydrate sql.NullInt16 `json:"carbohydrate"`
@@ -87,6 +88,7 @@ type SubmitNutritionParams struct {
 
 func (q *Queries) SubmitNutrition(ctx context.Context, arg SubmitNutritionParams) (TrackerNutrition, error) {
 	row := q.db.QueryRowContext(ctx, submitNutrition,
+		arg.SubmittedOn,
 		arg.Calories,
 		arg.Protein,
 		arg.Carbohydrate,
