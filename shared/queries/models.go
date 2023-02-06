@@ -5,7 +5,6 @@
 package queries
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/tabbed/pqtype"
@@ -13,25 +12,25 @@ import (
 )
 
 type TrackerComposition struct {
-	SubmittedOn  string `json:"date"`
-	Weight       string `json:"weight"`
-	Bodyfat      string `json:"bodyfat"`
-	Neck         types.NullString `json:"neck,omitempty"`
-	Shoulders    types.NullString `json:"shoulders,omitempty"`
-	LeftBicep    types.NullString `json:"leftBicep,omitempty"`
-	RightBicep   types.NullString `json:"rightBicep,omitempty"`
-	LeftTricep   types.NullString `json:"leftTricep,omitempty"`
-	RightTricep  types.NullString `json:"rightTricep,omitempty"`
-	LeftForearm  types.NullString `json:"leftForearm,omitempty"`
-	RightForearm types.NullString `json:"rightForearm,omitempty"`
-	Chest        types.NullString `json:"chest,omitempty"`
-	Waist        types.NullString `json:"waist,omitempty"`
-	LeftQuad     types.NullString `json:"leftQuad,omitempty"`
-	RightQuad    types.NullString `json:"rightQuad,omitempty"`
-	LeftCalf     types.NullString `json:"leftCalf,omitempty"`
-	RightCalf    types.NullString `json:"rightCalf,omitempty"`
-	CretTs       sql.NullTime `json:"-"`
-	UpdtTs       sql.NullTime `json:"-"`
+	SubmittedOn  string         `json:"submittedOn"`
+	Weight       string         `json:"weight"`
+	Bodyfat      string         `json:"bodyfat"`
+	Neck         types.NullString `json:"neck"`
+	Shoulders    types.NullString `json:"shoulders"`
+	LeftBicep    types.NullString `json:"leftBicep"`
+	RightBicep   types.NullString `json:"rightBicep"`
+	LeftTricep   types.NullString `json:"leftTricep"`
+	RightTricep  types.NullString `json:"rightTricep"`
+	LeftForearm  types.NullString `json:"leftForearm"`
+	RightForearm types.NullString `json:"rightForearm"`
+	Chest        types.NullString `json:"chest"`
+	Waist        types.NullString `json:"waist"`
+	LeftQuad     types.NullString `json:"leftQuad"`
+	RightQuad    types.NullString `json:"rightQuad"`
+	LeftCalf     types.NullString `json:"leftCalf"`
+	RightCalf    types.NullString `json:"rightCalf"`
+	CretTs       time.Time      `json:"-"`
+	UpdtTs       time.Time      `json:"-"`
 }
 
 type TrackerExercise struct {
@@ -49,20 +48,22 @@ type TrackerExerciseDetail struct {
 }
 
 type TrackerExercisePerformed struct {
-	ID           int32     `json:"id"`
-	WorkoutID    int32     `json:"workoutID"`
-	GroupID      int16     `json:"groupID"`
-	ExerciseName string    `json:"exerciseName"`
-	CretTs       time.Time `json:"cretTs"`
-	UpdtTs       time.Time `json:"updtTs"`
+	ID            int32          `json:"id"`
+	SetID         int32          `json:"setID"`
+	ExerciseName  string         `json:"exerciseName"`
+	Reps          int16          `json:"reps"`
+	Weight        int16          `json:"weight"`
+	RepsInReserve types.NullString `json:"repsInReserve"`
+	CretTs        time.Time      `json:"cretTs"`
+	UpdtTs        time.Time      `json:"updtTs"`
 }
 
 type TrackerNutrition struct {
 	SubmittedOn    string                `json:"submittedOn"`
 	Calories       int16                 `json:"calories"`
-	Protein        sql.NullInt16         `json:"protein"`
-	Carbohydrate   sql.NullInt16         `json:"carbohydrate"`
-	Fat            sql.NullInt16         `json:"fat"`
+	Protein        types.NullInt16         `json:"protein"`
+	Carbohydrate   types.NullInt16         `json:"carbohydrate"`
+	Fat            types.NullInt16         `json:"fat"`
 	Micronutrients pqtype.NullRawMessage `json:"micronutrients"`
 	CretTs         time.Time             `json:"cretTs"`
 	UpdtTs         time.Time             `json:"updtTs"`
@@ -82,13 +83,11 @@ type TrackerProgramDetail struct {
 }
 
 type TrackerSetPerformed struct {
-	ID            int32          `json:"id"`
-	ExerciseID    int32          `json:"exerciseID"`
-	Reps          int16          `json:"reps"`
-	Weight        int16          `json:"weight"`
-	RepsInReserve types.NullString `json:"repsInReserve"`
-	CretTs        time.Time      `json:"cretTs"`
-	UpdtTs        time.Time      `json:"updtTs"`
+	ID        int32     `json:"id"`
+	WorkoutID int32     `json:"workoutID"`
+	GroupID   int16     `json:"groupID"`
+	CretTs    time.Time `json:"cretTs"`
+	UpdtTs    time.Time `json:"updtTs"`
 }
 
 type TrackerWorkout struct {
