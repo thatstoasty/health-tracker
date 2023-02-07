@@ -8,6 +8,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"encoding/json"
+	"os"
+	"io/ioutil"
 
 	"github.com/thatstoasty/health-tracker/cli/load"
 	"github.com/thatstoasty/health-tracker/shared/queries"
@@ -161,12 +164,105 @@ to quickly create a Cobra application.`,
 	},
 }
 
+type Exercise struct {
+	Name string `json:"name"`
+	Primary []string `json:"primary"`
+	Secondary []string `json:"secondary"`
+	Tertiary []string `json:"tertiary"`
+	Type string `json:"type"`
+	Variation string `json:"variation"`
+}
+
+type Exercises struct {
+	Exercises []Exercise `json:"exercises"`
+}
+
+var uploadExercisesCmd = &cobra.Command{
+	Use:   "upload-exercises",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		path := args[0]
+
+		// Open our jsonFile
+		jsonFile, err := os.Open(path)
+		// if we os.Open returns an error then handle it
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("Successfully opened the file.")
+		// defer the closing of our jsonFile so that we can parse it later on
+		defer jsonFile.Close()
+
+		// read our opened jsonFile as a byte array.
+		byteValue, err := ioutil.ReadAll(jsonFile)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// we initialize our Exercises array
+		var exercises Exercises
+
+		// we unmarshal our byteArray which contains our
+		// jsonFile's content into 'users' which we defined above
+		error := json.Unmarshal(byteValue, &exercises)
+		if error != nil {
+			fmt.Println(error)
+		}
+
+		fmt.Println(exercises.Exercises)
+
+		// we iterate through every user within our users array and
+		// print out the user Type, their name, and their facebook url
+		// as just an example
+		for i := 0; i < len(exercises.Exercises); i++ {
+			fmt.Println("\n----")
+			fmt.Println(exercises.Exercises[i])
+			fmt.Println("Exercise Name: " + exercises.Exercises[i].Name)
+			fmt.Printf("Primary: %v", exercises.Exercises[i].Primary)
+			fmt.Printf("\nSecondary: %v", exercises.Exercises[i].Secondary)
+			fmt.Printf("\nTertiary: %v", exercises.Exercises[i].Tertiary)
+			fmt.Printf("\nType Of: %v", exercises.Exercises[i].Type)
+			fmt.Printf("\nVariation Of: %v", exercises.Exercises[i].Variation)
+
+		}
+
+	// 	records := load.GetRecordsFromFile(path)
+	// 	fmt.Println(records)
+	// 	list := load.CreateNutritionList(records)
+	// 	fmt.Printf("%+v\n", list)
+
+	// 	db, err := utils.GetDBConnection()
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	queries := queries.New(db)
+	// 	ctx := context.Background()
+
+	// 	for _, entry := range list {
+	// 		nutrition, err := queries.SubmitNutrition(ctx, entry)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+	// 		log.Println(nutrition)
+	// 	}
+	},
+}
+
+
 
 func init() {
 	rootCmd.AddCommand(submitCompositionCmd)
 	rootCmd.AddCommand(submitCompositionFileCmd)
 	rootCmd.AddCommand(submitNutritionCmd)
 	rootCmd.AddCommand(submitNutritionFileCmd)
+	rootCmd.AddCommand(uploadExercisesCmd)
 
 	submitCompositionCmd.Flags().String("date", "", "Weigh-in date.")
 	submitCompositionCmd.Flags().String("weight", "", "Bodyweight in lbs.")
