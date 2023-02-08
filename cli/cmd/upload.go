@@ -229,7 +229,6 @@ to quickly create a Cobra application.`,
 			fmt.Printf("\nTertiary: %v", exercises.Exercises[i].Tertiary)
 			fmt.Printf("\nType Of: %v", exercises.Exercises[i].Type)
 			fmt.Printf("\nVariation Of: %v", exercises.Exercises[i].Variation)
-
 		}
 
 	// 	records := load.GetRecordsFromFile(path)
@@ -255,6 +254,87 @@ to quickly create a Cobra application.`,
 	},
 }
 
+type BodyPart struct {
+	Name string `json:"name"`
+	Region string `json:"region"`
+	UpperOrLower string `json:"upper_or_lower"`
+}
+
+type BodyParts struct {
+	BodyParts []BodyPart `json:"body_parts"`
+}
+
+var uploadBodyPartsCmd = &cobra.Command{
+	Use:   "upload-body-parts",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		path := args[0]
+
+		// Open our jsonFile
+		jsonFile, err := os.Open(path)
+		// if we os.Open returns an error then handle it
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("Successfully opened the file.")
+		// defer the closing of our jsonFile so that we can parse it later on
+		defer jsonFile.Close()
+
+		// read our opened jsonFile as a byte array.
+		byteValue, err := ioutil.ReadAll(jsonFile)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// we initialize our BodyParts array
+		var bodyParts BodyParts
+
+		// we unmarshal our byteArray which contains our
+		// jsonFile's content into 'users' which we defined above
+		error := json.Unmarshal(byteValue, &bodyParts)
+		if error != nil {
+			fmt.Println(error)
+		}
+
+		fmt.Println(bodyParts.BodyParts)
+
+		db, err := utils.GetDBConnection()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queries := queries.New(db)
+		ctx := context.Background()
+
+		// we iterate through every user within our users array and
+		// print out the user Type, their name, and their facebook url
+		// as just an example
+		// for i := 0; i < len(bodyParts.BodyParts); i++ {
+		// 	fmt.Println("\n----")
+		// 	fmt.Println(bodyParts.BodyParts[i])
+		// 	fmt.Println("Body Part Name: " + bodyParts.BodyParts[i].Name)
+		// 	fmt.Printf("Region: %v", bodyParts.BodyParts[i].Region)
+		// 	fmt.Printf("\nUpper or Lower: %v", bodyParts.BodyParts[i].UpperOrLower)
+		// }
+
+		for _, bodyPart := range bodyParts.BodyParts {
+			fmt.Println("\n----")
+			fmt.Println(bodyPart)
+			response, err := queries.SubmitNutrition(ctx, bodyPart)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println(response)
+		}
+	},
+}
+
 
 
 func init() {
@@ -263,6 +343,7 @@ func init() {
 	rootCmd.AddCommand(submitNutritionCmd)
 	rootCmd.AddCommand(submitNutritionFileCmd)
 	rootCmd.AddCommand(uploadExercisesCmd)
+	rootCmd.AddCommand(uploadBodyPartsCmd)
 
 	submitCompositionCmd.Flags().String("date", "", "Weigh-in date.")
 	submitCompositionCmd.Flags().String("weight", "", "Bodyweight in lbs.")

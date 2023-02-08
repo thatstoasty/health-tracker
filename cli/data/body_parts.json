@@ -1,107 +1,109 @@
-[
-    {
-        "name": "chest",
-        "region": "chest",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "serratus anterior",
-        "region": "chest",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "erector spinae",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "trapezius",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "rhomboid major",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "teres minor",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "teres major",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "latissimus dorsi",
-        "region": "back",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "rear deltoid",
-        "region": "shoulders",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "lateral deltoid",
-        "region": "shoulders",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "front deltoid",
-        "region": "shoulders",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "neck",
-        "region": "neck",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "abdominals",
-        "region": "core",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "obliques",
-        "region": "core",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "biceps",
-        "region": "core",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "triceps",
-        "region": "core",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "forearms",
-        "region": "core",
-        "upper_or_lower": "upper"
-    },
-    {
-        "name": "quadriceps",
-        "region": "legs",
-        "upper_or_lower": "lower"
-    },
-    {
-        "name": "hamstrings",
-        "region": "legs",
-        "upper_or_lower": "lower"
-    },
-    {
-        "name": "glutes",
-        "region": "legs",
-        "upper_or_lower": "lower"
-    },
-    {
-        "name": "calves",
-        "region": "legs",
-        "upper_or_lower": "lower"
-    }
-]
+{
+    "body_parts": [
+        {
+            "name": "chest",
+            "region": "chest",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "serratus anterior",
+            "region": "chest",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "erector spinae",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "trapezius",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "rhomboid major",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "teres minor",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "teres major",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "latissimus dorsi",
+            "region": "back",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "rear deltoid",
+            "region": "shoulders",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "lateral deltoid",
+            "region": "shoulders",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "front deltoid",
+            "region": "shoulders",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "neck",
+            "region": "neck",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "abdominals",
+            "region": "core",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "obliques",
+            "region": "core",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "biceps",
+            "region": "core",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "triceps",
+            "region": "core",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "forearms",
+            "region": "core",
+            "upper_or_lower": "upper"
+        },
+        {
+            "name": "quadriceps",
+            "region": "legs",
+            "upper_or_lower": "lower"
+        },
+        {
+            "name": "hamstrings",
+            "region": "legs",
+            "upper_or_lower": "lower"
+        },
+        {
+            "name": "glutes",
+            "region": "legs",
+            "upper_or_lower": "lower"
+        },
+        {
+            "name": "calves",
+            "region": "legs",
+            "upper_or_lower": "lower"
+        }
+    ]
+}

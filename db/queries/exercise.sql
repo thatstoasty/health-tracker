@@ -11,3 +11,19 @@ LIMIT $1;
 -- name: DeleteExercise :exec
 DELETE FROM tracker.exercise
 WHERE NAME = $1;
+
+-- name: SubmitExercise :one
+INSERT INTO tracker.exercise (
+  NAME
+) VALUES (
+  $1
+)
+RETURNING *;
+
+-- name: SubmitExerciseDetails :one
+INSERT INTO tracker.exercise_details (
+  EXERCISE_NAME, BODY_PART, LEVEL
+) VALUES (
+  $1, $2, $3
+)
+RETURNING *;

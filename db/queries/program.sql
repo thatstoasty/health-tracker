@@ -14,3 +14,19 @@ LIMIT 1;
 -- name: DeleteProgram :exec
 DELETE FROM tracker.program
 WHERE NAME = $1;
+
+-- name: SubmitWorkout :one
+INSERT INTO tracker.program (
+  NAME
+) VALUES (
+  $1
+)
+RETURNING *;
+
+-- name: SubmitWorkoutDetails :one
+INSERT INTO tracker.program_details (
+  PROGRAM_NAME, WORKOUT_NAME
+) VALUES (
+  $1, $2
+)
+RETURNING *;
