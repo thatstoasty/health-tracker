@@ -35,7 +35,7 @@ to quickly create a Cobra application.`,
 		weight, _ := cmd.Flags().GetString("weight")
 		bodyfat, _ := cmd.Flags().GetString("bodyfat")
 
-		entry := queries.SubmitCompositionParams{SubmittedOn: date, Weight: weight, Bodyfat: bodyfat}
+		entry := models.SubmitCompositionParams{SubmittedOn: date, Weight: weight, Bodyfat: bodyfat}
 
 		db, err := utils.GetDBConnection()
 		if err != nil {
@@ -70,7 +70,7 @@ to quickly create a Cobra application.`,
 		carbohydrates, _ := cmd.Flags().GetInt16("carbohydrates")
 		fats, _ := cmd.Flags().GetInt16("fats")
 
-		entry := queries.SubmitNutritionParams{
+		entry := models.SubmitNutritionParams{
 			SubmittedOn:  date,
 			Calories:     calories,
 			Protein:      sql.NullInt16{Int16: protein, Valid: true},
@@ -326,7 +326,12 @@ to quickly create a Cobra application.`,
 		for _, bodyPart := range bodyParts.BodyParts {
 			fmt.Println("\n----")
 			fmt.Println(bodyPart)
-			response, err := queries.SubmitBodyPart(ctx, queries.SubmitBodyPartParams{})
+			entry := models.SubmitBodyPartParams {
+				Name: bodyPart.Name,
+				Region: bodyPart.Region,
+				UpperOrLower: bodyPart.UpperOrLower,
+			}
+			response, err := queries.SubmitBodyPart(ctx, entry)
 			if err != nil {
 				log.Fatal(err)
 			}

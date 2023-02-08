@@ -11,6 +11,14 @@ import (
 	"github.com/thatstoasty/health-tracker/shared/types"
 )
 
+type TrackerBodyPart struct {
+	Name         string    `json:"name"`
+	Region       string    `json:"region"`
+	UpperOrLower string    `json:"upperOrLower"`
+	CretTs       time.Time `json:"cretTs"`
+	UpdtTs       time.Time `json:"updtTs"`
+}
+
 type TrackerComposition struct {
 	SubmittedOn  string         `json:"submittedOn"`
 	Weight       string         `json:"weight"`

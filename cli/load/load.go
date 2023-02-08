@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/thatstoasty/health-tracker/shared/queries"
+	"github.com/thatstoasty/health-tracker/shared/models"
 )
 
 func GetRecordsFromFile(path string) [][]string {
@@ -30,11 +30,11 @@ func GetRecordsFromFile(path string) [][]string {
 	return data
 }
 
-func CreateCompositionList(data [][]string) []queries.SubmitCompositionParams {
-	var compositionList []queries.SubmitCompositionParams
+func CreateCompositionList(data [][]string) []models.SubmitCompositionParams {
+	var compositionList []models.SubmitCompositionParams
 	for i, line := range data {
 		if i > 0 { // omit header line
-			var rec queries.SubmitCompositionParams
+			var rec models.SubmitCompositionParams
 			for j, field := range line {
 				if j == 0 {
 					rec.SubmittedOn = field
@@ -50,11 +50,11 @@ func CreateCompositionList(data [][]string) []queries.SubmitCompositionParams {
 	return compositionList
 }
 
-func CreateNutritionList(data [][]string) []queries.SubmitNutritionParams {
-	var nutritionList []queries.SubmitNutritionParams
+func CreateNutritionList(data [][]string) []models.SubmitNutritionParams {
+	var nutritionList []models.SubmitNutritionParams
 	for i, line := range data {
 		if i > 0 { // omit header line
-			var rec queries.SubmitNutritionParams
+			var rec models.SubmitNutritionParams
 			for j, field := range line {
 				if j == 0 {
 					rec.SubmittedOn = field
