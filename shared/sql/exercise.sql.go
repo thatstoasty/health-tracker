@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: exercise.sql
 
-package queries
+package sql
 
 import (
 	"context"
@@ -81,4 +81,48 @@ func (q *Queries) GetExercises(ctx context.Context, limit int32) ([]string, erro
 		return nil, err
 	}
 	return items, nil
+}
+
+const submitExercise = `-- name: SubmitExercise :one
+INSERT INTO tracker.exercise (
+  NAME
+) VALUES (
+  $1
+)
+RETURNING name, cret_ts, updt_ts
+`
+
+func (q *Queries) SubmitExercise(ctx context.Context, name string) (TrackerExercise, error) {
+	row := q.db.QueryRowContext(ctx, submitExercise, name)
+	var i TrackerExercise
+	err := row.Scan(&i.Name, &i.CretTs, &i.UpdtTs)
+	return i, err
+}
+
+const submitExerciseDetails = `-- name: SubmitExerciseDetails :one
+INSERT INTO tracker.exercise_details (
+  EXERCISE_NAME, BODY_PART, LEVEL
+) VALUES (
+  $1, $2, $3
+)
+RETURNING exercise_name, body_part, level, cret_ts, updt_ts
+`
+
+type SubmitExerciseDetailsParams struct {
+	ExerciseName string `json:"exerciseName"`
+	BodyPart     string `json:"bodyPart"`
+	Level        string `json:"level"`
+}
+
+func (q *Queries) SubmitExerciseDetails(ctx context.Context, arg SubmitExerciseDetailsParams) (TrackerExerciseDetail, error) {
+	row := q.db.QueryRowContext(ctx, submitExerciseDetails, arg.ExerciseName, arg.BodyPart, arg.Level)
+	var i TrackerExerciseDetail
+	err := row.Scan(
+		&i.ExerciseName,
+		&i.BodyPart,
+		&i.Level,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
+	return i, err
 }

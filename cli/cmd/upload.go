@@ -6,14 +6,16 @@ package cmd
 import (
 	"context"
 	"database/sql"
-	"fmt"
-	"log"
 	"encoding/json"
-	"os"
+	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
 
 	"github.com/thatstoasty/health-tracker/cli/load"
+
 	"github.com/thatstoasty/health-tracker/shared/queries"
+	"github.com/thatstoasty/health-tracker/shared/sql"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 
 	"github.com/spf13/cobra"
@@ -34,7 +36,7 @@ to quickly create a Cobra application.`,
 		weight, _ := cmd.Flags().GetString("weight")
 		bodyfat, _ := cmd.Flags().GetString("bodyfat")
 
-		entry := queries.SubmitCompositionParams {SubmittedOn: date, Weight: weight, Bodyfat: bodyfat}
+		entry := queries.SubmitCompositionParams{SubmittedOn: date, Weight: weight, Bodyfat: bodyfat}
 
 		db, err := utils.GetDBConnection()
 		if err != nil {
@@ -69,13 +71,12 @@ to quickly create a Cobra application.`,
 		carbohydrates, _ := cmd.Flags().GetInt16("carbohydrates")
 		fats, _ := cmd.Flags().GetInt16("fats")
 
-
-		entry := queries.SubmitNutritionParams {
-			SubmittedOn: date, 
-			Calories: calories, 
-			Protein: sql.NullInt16 {Int16: protein, Valid: true}, 
-			Carbohydrate: sql.NullInt16 {Int16: carbohydrates, Valid: true}, 
-			Fat: sql.NullInt16 {Int16: fats, Valid: true},
+		entry := queries.SubmitNutritionParams{
+			SubmittedOn:  date,
+			Calories:     calories,
+			Protein:      sql.NullInt16{Int16: protein, Valid: true},
+			Carbohydrate: sql.NullInt16{Int16: carbohydrates, Valid: true},
+			Fat:          sql.NullInt16{Int16: fats, Valid: true},
 		}
 
 		db, err := utils.GetDBConnection()
@@ -165,12 +166,12 @@ to quickly create a Cobra application.`,
 }
 
 type Exercise struct {
-	Name string `json:"name"`
-	Primary []string `json:"primary"`
+	Name      string   `json:"name"`
+	Primary   []string `json:"primary"`
 	Secondary []string `json:"secondary"`
-	Tertiary []string `json:"tertiary"`
-	Type string `json:"type"`
-	Variation string `json:"variation"`
+	Tertiary  []string `json:"tertiary"`
+	Type      string   `json:"type"`
+	Variation string   `json:"variation"`
 }
 
 type Exercises struct {
@@ -231,32 +232,32 @@ to quickly create a Cobra application.`,
 			fmt.Printf("\nVariation Of: %v", exercises.Exercises[i].Variation)
 		}
 
-	// 	records := load.GetRecordsFromFile(path)
-	// 	fmt.Println(records)
-	// 	list := load.CreateNutritionList(records)
-	// 	fmt.Printf("%+v\n", list)
+		// 	records := load.GetRecordsFromFile(path)
+		// 	fmt.Println(records)
+		// 	list := load.CreateNutritionList(records)
+		// 	fmt.Printf("%+v\n", list)
 
-	// 	db, err := utils.GetDBConnection()
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+		// 	db, err := utils.GetDBConnection()
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
 
-	// 	queries := queries.New(db)
-	// 	ctx := context.Background()
+		// 	queries := queries.New(db)
+		// 	ctx := context.Background()
 
-	// 	for _, entry := range list {
-	// 		nutrition, err := queries.SubmitNutrition(ctx, entry)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-	// 		log.Println(nutrition)
-	// 	}
+		// 	for _, entry := range list {
+		// 		nutrition, err := queries.SubmitNutrition(ctx, entry)
+		// 		if err != nil {
+		// 			log.Fatal(err)
+		// 		}
+		// 		log.Println(nutrition)
+		// 	}
 	},
 }
 
 type BodyPart struct {
-	Name string `json:"name"`
-	Region string `json:"region"`
+	Name         string `json:"name"`
+	Region       string `json:"region"`
 	UpperOrLower string `json:"upper_or_lower"`
 }
 
@@ -326,7 +327,7 @@ to quickly create a Cobra application.`,
 		for _, bodyPart := range bodyParts.BodyParts {
 			fmt.Println("\n----")
 			fmt.Println(bodyPart)
-			response, err := queries.SubmitNutrition(ctx, bodyPart)
+			response, err := queries.SubmitBodyPart(ctx, queries.SubmitBodyPartParams{})
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -334,8 +335,6 @@ to quickly create a Cobra application.`,
 		}
 	},
 }
-
-
 
 func init() {
 	rootCmd.AddCommand(submitCompositionCmd)
@@ -355,12 +354,8 @@ func init() {
 	submitNutritionCmd.Flags().Int16("carbohydrates", 0, "Carbohydrates consumed on date.")
 	submitNutritionCmd.Flags().Int16("fats", 0, "Fats consumed on date.")
 
-
 	submitCompositionFileCmd.Flags().String("path", "", "Path to the CSV file containing the composition entries.")
 	submitNutritionFileCmd.Flags().String("path", "", "Path to the CSV file containing the nutrition entries.")
-
-
-
 
 	// Here you will define your flags and configuration settings.
 

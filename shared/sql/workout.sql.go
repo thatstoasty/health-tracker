@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: workout.sql
 
-package queries
+package sql
 
 import (
 	"context"
@@ -87,6 +87,73 @@ func (q *Queries) GetWorkoutPerformed(ctx context.Context, submittedOn time.Time
 		&i.ID,
 		&i.SubmittedOn,
 		&i.WorkoutName,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
+	return i, err
+}
+
+const submitWorkout = `-- name: SubmitWorkout :one
+INSERT INTO tracker.workout (
+  NAME, PROGRAM_NAME
+) VALUES (
+  $1, $2
+)
+RETURNING name, program_name, cret_ts, updt_ts
+`
+
+type SubmitWorkoutParams struct {
+	Name        string `json:"name"`
+	ProgramName string `json:"programName"`
+}
+
+func (q *Queries) SubmitWorkout(ctx context.Context, arg SubmitWorkoutParams) (TrackerWorkout, error) {
+	row := q.db.QueryRowContext(ctx, submitWorkout, arg.Name, arg.ProgramName)
+	var i TrackerWorkout
+	err := row.Scan(
+		&i.Name,
+		&i.ProgramName,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
+	return i, err
+}
+
+const submitWorkoutDetails = `-- name: SubmitWorkoutDetails :one
+INSERT INTO tracker.workout_details (
+  WORKOUT_NAME, GROUP_ID, EXERCISE_NAME, SETS, REPS, WEIGHT
+) VALUES (
+  $1, $2, $3, $4, $5, $6
+)
+RETURNING workout_name, group_id, exercise_name, sets, reps, weight, cret_ts, updt_ts
+`
+
+type SubmitWorkoutDetailsParams struct {
+	WorkoutName  string `json:"workoutName"`
+	GroupID      int16  `json:"groupID"`
+	ExerciseName string `json:"exerciseName"`
+	Sets         int16  `json:"sets"`
+	Reps         int16  `json:"reps"`
+	Weight       int16  `json:"weight"`
+}
+
+func (q *Queries) SubmitWorkoutDetails(ctx context.Context, arg SubmitWorkoutDetailsParams) (TrackerWorkoutDetail, error) {
+	row := q.db.QueryRowContext(ctx, submitWorkoutDetails,
+		arg.WorkoutName,
+		arg.GroupID,
+		arg.ExerciseName,
+		arg.Sets,
+		arg.Reps,
+		arg.Weight,
+	)
+	var i TrackerWorkoutDetail
+	err := row.Scan(
+		&i.WorkoutName,
+		&i.GroupID,
+		&i.ExerciseName,
+		&i.Sets,
+		&i.Reps,
+		&i.Weight,
 		&i.CretTs,
 		&i.UpdtTs,
 	)

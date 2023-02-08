@@ -15,7 +15,7 @@ LIMIT 1;
 DELETE FROM tracker.program
 WHERE NAME = $1;
 
--- name: SubmitWorkout :one
+-- name: SubmitProgram :one
 INSERT INTO tracker.program (
   NAME
 ) VALUES (
@@ -23,7 +23,7 @@ INSERT INTO tracker.program (
 )
 RETURNING *;
 
--- name: SubmitWorkoutDetails :one
+-- name: SubmitProgramDetails :one
 INSERT INTO tracker.program_details (
   PROGRAM_NAME, WORKOUT_NAME
 ) VALUES (

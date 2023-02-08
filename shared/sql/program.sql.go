@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: program.sql
 
-package queries
+package sql
 
 import (
 	"context"
@@ -96,4 +96,46 @@ func (q *Queries) GetProgramNames(ctx context.Context, limit int32) ([]string, e
 		return nil, err
 	}
 	return items, nil
+}
+
+const submitProgram = `-- name: SubmitProgram :one
+INSERT INTO tracker.program (
+  NAME
+) VALUES (
+  $1
+)
+RETURNING name, cret_ts, updt_ts
+`
+
+func (q *Queries) SubmitProgram(ctx context.Context, name string) (TrackerProgram, error) {
+	row := q.db.QueryRowContext(ctx, submitProgram, name)
+	var i TrackerProgram
+	err := row.Scan(&i.Name, &i.CretTs, &i.UpdtTs)
+	return i, err
+}
+
+const submitProgramDetails = `-- name: SubmitProgramDetails :one
+INSERT INTO tracker.program_details (
+  PROGRAM_NAME, WORKOUT_NAME
+) VALUES (
+  $1, $2
+)
+RETURNING program_name, workout_name, cret_ts, updt_ts
+`
+
+type SubmitProgramDetailsParams struct {
+	ProgramName string `json:"programName"`
+	WorkoutName string `json:"workoutName"`
+}
+
+func (q *Queries) SubmitProgramDetails(ctx context.Context, arg SubmitProgramDetailsParams) (TrackerProgramDetail, error) {
+	row := q.db.QueryRowContext(ctx, submitProgramDetails, arg.ProgramName, arg.WorkoutName)
+	var i TrackerProgramDetail
+	err := row.Scan(
+		&i.ProgramName,
+		&i.WorkoutName,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
+	return i, err
 }

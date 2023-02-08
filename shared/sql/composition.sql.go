@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: composition.sql
 
-package queries
+package sql
 
 import (
 	"context"
