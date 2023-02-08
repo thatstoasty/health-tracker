@@ -8,7 +8,6 @@ import (
 	"strconv"
 
 	"github.com/thatstoasty/health-tracker/shared/queries"
-	"github.com/thatstoasty/health-tracker/shared/sql"
 )
 
 func GetRecordsFromFile(path string) [][]string {

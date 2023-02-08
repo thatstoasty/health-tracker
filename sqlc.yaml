@@ -5,7 +5,7 @@ sql:
     schema: "db/ddl/"
     gen:
       go:
-        package: "sql"
-        out: "shared/sql"
+        package: "models"
+        out: "shared/models"
         emit_json_tags: true
         json_tags_case_style: "camel"

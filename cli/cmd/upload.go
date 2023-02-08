@@ -14,8 +14,7 @@ import (
 
 	"github.com/thatstoasty/health-tracker/cli/load"
 
-	"github.com/thatstoasty/health-tracker/shared/queries"
-	"github.com/thatstoasty/health-tracker/shared/sql"
+	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 
 	"github.com/spf13/cobra"
@@ -43,7 +42,7 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		queries := queries.New(db)
+		queries := models.New(db)
 		ctx := context.Background()
 
 		composition, err := queries.SubmitComposition(ctx, entry)
@@ -84,7 +83,7 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		queries := queries.New(db)
+		queries := models.New(db)
 		ctx := context.Background()
 
 		nutrition, err := queries.SubmitNutrition(ctx, entry)
@@ -117,7 +116,7 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		queries := queries.New(db)
+		queries := models.New(db)
 		ctx := context.Background()
 
 		for _, entry := range list {
@@ -152,7 +151,7 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		queries := queries.New(db)
+		queries := models.New(db)
 		ctx := context.Background()
 
 		for _, entry := range list {
@@ -242,7 +241,7 @@ to quickly create a Cobra application.`,
 		// 		log.Fatal(err)
 		// 	}
 
-		// 	queries := queries.New(db)
+		// 	queries := models.New(db)
 		// 	ctx := context.Background()
 
 		// 	for _, entry := range list {
@@ -310,7 +309,7 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		queries := queries.New(db)
+		queries := models.New(db)
 		ctx := context.Background()
 
 		// we iterate through every user within our users array and

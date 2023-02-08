@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
-	"github.com/thatstoasty/health-tracker/shared/queries"
+	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
@@ -18,13 +18,13 @@ type GenericResponse struct {
 
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
-	var requestBody queries.SubmitCompositionParams
+	var requestBody models.SubmitCompositionParams
 	db, err := utils.GetDBConnection()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := queries.New(db)
+	queries := models.New(db)
 	ctx := context.Background()
 
 	// bind request body to variable given
@@ -47,7 +47,7 @@ func GetComposition(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := queries.New(db)
+	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 
@@ -66,7 +66,7 @@ func DeleteComposition(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := queries.New(db)
+	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 

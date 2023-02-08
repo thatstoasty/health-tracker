@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: exercise.sql
 
-package sql
+package models
 
 import (
 	"context"

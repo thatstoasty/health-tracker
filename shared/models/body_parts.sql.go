@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: body_parts.sql
 
-package sql
+package models
 
 import (
 	"context"

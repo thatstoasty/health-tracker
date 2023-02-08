@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: nutrition.sql
 
-package sql
+package models
 
 import (
 	"context"
