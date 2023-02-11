@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 )
 
 const deleteExercise = `-- name: DeleteExercise :exec
@@ -85,17 +86,29 @@ func (q *Queries) GetExercises(ctx context.Context, limit int32) ([]string, erro
 
 const submitExercise = `-- name: SubmitExercise :one
 INSERT INTO tracker.exercise (
-  NAME
+  NAME, TYPE, VARIATION
 ) VALUES (
-  $1
+  $1, $2, $3
 )
-RETURNING name, cret_ts, updt_ts
+RETURNING name, type, variation, cret_ts, updt_ts
 `
 
-func (q *Queries) SubmitExercise(ctx context.Context, name string) (TrackerExercise, error) {
-	row := q.db.QueryRowContext(ctx, submitExercise, name)
+type SubmitExerciseParams struct {
+	Name      string         `json:"name"`
+	Type      sql.NullString `json:"type"`
+	Variation sql.NullString `json:"variation"`
+}
+
+func (q *Queries) SubmitExercise(ctx context.Context, arg SubmitExerciseParams) (TrackerExercise, error) {
+	row := q.db.QueryRowContext(ctx, submitExercise, arg.Name, arg.Type, arg.Variation)
 	var i TrackerExercise
-	err := row.Scan(&i.Name, &i.CretTs, &i.UpdtTs)
+	err := row.Scan(
+		&i.Name,
+		&i.Type,
+		&i.Variation,
+		&i.CretTs,
+		&i.UpdtTs,
+	)
 	return i, err
 }
 

@@ -13,11 +13,11 @@ import (
 	"os"
 
 	"github.com/thatstoasty/health-tracker/cli/load"
-
 	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 
 	"github.com/spf13/cobra"
+	"github.com/tidwall/gjson"
 )
 
 // getCmd represents the get command
@@ -217,6 +217,14 @@ to quickly create a Cobra application.`,
 
 		fmt.Println(exercises.Exercises)
 
+		db, err := utils.GetDBConnection()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queries := models.New(db)
+		ctx := context.Background()
+
 		// we iterate through every user within our users array and
 		// print out the user Type, their name, and their facebook url
 		// as just an example
@@ -231,26 +239,56 @@ to quickly create a Cobra application.`,
 			fmt.Printf("\nVariation Of: %v", exercises.Exercises[i].Variation)
 		}
 
-		// 	records := load.GetRecordsFromFile(path)
-		// 	fmt.Println(records)
-		// 	list := load.CreateNutritionList(records)
-		// 	fmt.Printf("%+v\n", list)
-
-		// 	db, err := utils.GetDBConnection()
-		// 	if err != nil {
-		// 		log.Fatal(err)
-		// 	}
-
-		// 	queries := models.New(db)
-		// 	ctx := context.Background()
-
-		// 	for _, entry := range list {
-		// 		nutrition, err := queries.SubmitNutrition(ctx, entry)
-		// 		if err != nil {
-		// 			log.Fatal(err)
-		// 		}
-		// 		log.Println(nutrition)
-		// 	}
+		for _, exercise := range exercises.Exercises {
+			fmt.Println("\n----")
+			fmt.Println(exercise)
+			record := models.SubmitExerciseParams {
+				Name: exercise.Name,
+				Type: sql.NullString {String: exercise.Type, Valid: true},
+				Variation: sql.NullString {String: exercise.Variation, Valid: true},
+			}
+			response, err := queries.SubmitExercise(ctx, record)
+			log.Println(response)
+			if err != nil {
+				log.Fatal(err)
+			}
+			for _, bodyPart := range exercise.Primary {
+				entry := models.SubmitExerciseDetailsParams {
+					ExerciseName: exercise.Name,
+					BodyPart: bodyPart,
+					Level: "primary",
+				}
+				response, err := queries.SubmitExerciseDetails(ctx, entry)
+				if err != nil {
+					log.Fatal(err)
+				}
+				log.Println(response)
+			}
+			for _, bodyPart := range exercise.Secondary {
+				entry := models.SubmitExerciseDetailsParams {
+					ExerciseName: exercise.Name,
+					BodyPart: bodyPart,
+					Level: "secondary",
+				}
+				response, err := queries.SubmitExerciseDetails(ctx, entry)
+				if err != nil {
+					log.Fatal(err)
+				}
+				log.Println(response)
+			}
+			for _, bodyPart := range exercise.Tertiary {
+				entry := models.SubmitExerciseDetailsParams {
+					ExerciseName: exercise.Name,
+					BodyPart: bodyPart,
+					Level: "tertiary",
+				}
+				response, err := queries.SubmitExerciseDetails(ctx, entry)
+				if err != nil {
+					log.Fatal(err)
+				}
+				log.Println(response)
+			}
+		}
 	},
 }
 
@@ -312,17 +350,6 @@ to quickly create a Cobra application.`,
 		queries := models.New(db)
 		ctx := context.Background()
 
-		// we iterate through every user within our users array and
-		// print out the user Type, their name, and their facebook url
-		// as just an example
-		// for i := 0; i < len(bodyParts.BodyParts); i++ {
-		// 	fmt.Println("\n----")
-		// 	fmt.Println(bodyParts.BodyParts[i])
-		// 	fmt.Println("Body Part Name: " + bodyParts.BodyParts[i].Name)
-		// 	fmt.Printf("Region: %v", bodyParts.BodyParts[i].Region)
-		// 	fmt.Printf("\nUpper or Lower: %v", bodyParts.BodyParts[i].UpperOrLower)
-		// }
-
 		for _, bodyPart := range bodyParts.BodyParts {
 			fmt.Println("\n----")
 			fmt.Println(bodyPart)
@@ -340,6 +367,137 @@ to quickly create a Cobra application.`,
 	},
 }
 
+// type Programs struct {
+// 	Name string `json:"name"`
+// 	Name string `json:"name"`
+// }
+
+var uploadProgramCmd = &cobra.Command{
+	Use:   "upload-program",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		path := args[0]
+
+		// Open our jsonFile
+		jsonFile, err := os.Open(path)
+		// if we os.Open returns an error then handle it
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("Successfully opened the file.")
+		// defer the closing of our jsonFile so that we can parse it later on
+		defer jsonFile.Close()
+
+		// read our opened jsonFile as a byte array.
+		byteValue, err := ioutil.ReadAll(jsonFile)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		parsed := gjson.ParseBytes(byteValue)
+		json := parsed.Raw
+		//fmt.Println(gjson.Get(json, "workouts"))
+		programName := gjson.Get(json, "name").Str
+
+		// // we initialize our BodyParts array
+		// var bodyParts BodyParts
+
+		// // we unmarshal our byteArray which contains our
+		// // jsonFile's content into 'users' which we defined above
+		// error := json.Unmarshal(byteValue, &bodyParts)
+		// if error != nil {
+		// 	fmt.Println(error)
+		// }
+
+		// fmt.Println(bodyParts.BodyParts)
+
+		db, err := utils.GetDBConnection()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queries := models.New(db)
+		ctx := context.Background()
+
+		workouts := gjson.Get(json, "workouts")
+		fmt.Printf("Inserting program: %s\n", programName)
+
+		response, err := queries.SubmitProgram(ctx, programName)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(response)
+
+		workouts.ForEach(func(key, value gjson.Result) bool {
+			raw := value.Raw
+			workout := models.SubmitWorkoutParams {
+				Name: gjson.Get(raw, "name").Str,
+				ProgramName: programName,
+			}
+			log.Println(workout)
+
+			log.Println("Submitting Workout")
+			_, err := queries.SubmitWorkout(ctx, workout)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			programWorkoutLink := models.SubmitProgramDetailsParams {
+				ProgramName: programName,
+				WorkoutName: gjson.Get(raw, "name").Str,
+			}
+
+			_, err2 := queries.SubmitProgramDetails(ctx, programWorkoutLink)
+			if err2 != nil {
+				log.Println("Submitting program details")
+				log.Fatal(err2)
+			}
+
+			exercises := gjson.Get(raw, "exercises")
+			exercises.ForEach(func(key, value gjson.Result) bool {
+				exercise := value.Raw
+				details := models.SubmitWorkoutDetailsParams {
+					WorkoutName: gjson.Get(raw, "name").Str,
+					GroupID: int16(gjson.Get(exercise, "group_id").Num),
+					ExerciseName: gjson.Get(exercise, "name").Str,
+					Sets: int16(gjson.Get(exercise, "sets").Num),
+					Reps: int16(gjson.Get(exercise, "reps").Num),
+					Weight: sql.NullInt16{Int16: int16(gjson.Get(exercise, "weight").Num), Valid: true}, 
+				}
+				log.Println(details)
+				_, err := queries.SubmitWorkoutDetails(ctx, details)
+				if err != nil {
+					log.Fatal(err)
+				}
+				return true
+			})
+
+			return true // keep iterating
+		})
+
+		// for _, bodyPart := range workouts {
+		// 	fmt.Println("\n----")
+		// 	fmt.Println(bodyPart)
+		// 	entry := models.SubmitBodyPartParams {
+		// 		Name: bodyPart.Name,
+		// 		Region: bodyPart.Region,
+		// 		UpperOrLower: bodyPart.UpperOrLower,
+		// 	}
+		// 	response, err := queries.SubmitBodyPart(ctx, entry)
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// 	log.Println(response)
+		// }
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(submitCompositionCmd)
 	rootCmd.AddCommand(submitCompositionFileCmd)
@@ -347,6 +505,7 @@ func init() {
 	rootCmd.AddCommand(submitNutritionFileCmd)
 	rootCmd.AddCommand(uploadExercisesCmd)
 	rootCmd.AddCommand(uploadBodyPartsCmd)
+	rootCmd.AddCommand(uploadProgramCmd)
 
 	submitCompositionCmd.Flags().String("date", "", "Weigh-in date.")
 	submitCompositionCmd.Flags().String("weight", "", "Bodyweight in lbs.")

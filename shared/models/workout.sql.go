@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
 
@@ -134,7 +135,7 @@ type SubmitWorkoutDetailsParams struct {
 	ExerciseName string `json:"exerciseName"`
 	Sets         int16  `json:"sets"`
 	Reps         int16  `json:"reps"`
-	Weight       int16  `json:"weight"`
+	Weight       sql.NullInt16  `json:"weight"`
 }
 
 func (q *Queries) SubmitWorkoutDetails(ctx context.Context, arg SubmitWorkoutDetailsParams) (TrackerWorkoutDetail, error) {

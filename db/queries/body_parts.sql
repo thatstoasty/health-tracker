@@ -4,4 +4,9 @@ INSERT INTO tracker.body_parts (
 ) VALUES (
   $1, $2, $3
 )
+ON CONFLICT (NAME) 
+DO UPDATE SET 
+  REGION = $2,
+  UPPER_OR_LOWER = $3,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;

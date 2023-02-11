@@ -3,7 +3,7 @@
         {
             "name": "high bar squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": null
@@ -11,7 +11,7 @@
         {
             "name": "paused high bar squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": "high bar squat"
@@ -19,7 +19,7 @@
         {
             "name": "low bar squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": null
@@ -27,7 +27,7 @@
         {
             "name": "paused low bar squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": "low bar squat"
@@ -35,7 +35,7 @@
         {
             "name": "front squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": null
@@ -43,7 +43,7 @@
         {
             "name": "paused front squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": "front squat"
@@ -51,7 +51,7 @@
         {
             "name": "bulgarian split squat",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "squat",
             "variation": null
@@ -59,7 +59,7 @@
         {
             "name": "deadlift",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "deadlift",
             "variation": null
@@ -67,7 +67,7 @@
         {
             "name": "paused deadlift",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "deadlift",
             "variation": "deadlift"
@@ -75,7 +75,7 @@
         {
             "name": "sumo deadlift",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "deadlift",
             "variation": "deadlift"
@@ -83,7 +83,7 @@
         {
             "name": "paused sumo deadlift",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "deadlift",
             "variation": "sumo deadlift"
@@ -91,7 +91,7 @@
         {
             "name": "hex deadlift",
             "primary": ["quadriceps", "hamstrings", "glutes"],
-            "secondary": ["core"],
+            "secondary": ["abdominals"],
             "tertiary": null,
             "type": "deadlift",
             "variation": "deadlift"
@@ -100,7 +100,7 @@
             "name": "bench press",
             "primary": ["chest"],
             "secondary": ["triceps"],
-            "tertiary": ["front deltoids"],
+            "tertiary": ["front deltoid"],
             "type": "bench press",
             "variation": null
         },
@@ -108,7 +108,7 @@
             "name": "larsen press",
             "primary": ["chest"],
             "secondary": ["triceps"],
-            "tertiary": ["front deltoids"],
+            "tertiary": ["front deltoid"],
             "type": "bench press",
             "variation": "bench press"
         },
@@ -116,7 +116,7 @@
             "name": "close grip bench press",
             "primary": ["chest"],
             "secondary": ["triceps"],
-            "tertiary": ["front deltoids"],
+            "tertiary": ["front deltoid"],
             "type": "bench press",
             "variation": "bench press"
         },
@@ -124,7 +124,7 @@
             "name": "paused bench press",
             "primary": ["chest"],
             "secondary": ["triceps"],
-            "tertiary": ["front deltoids"],
+            "tertiary": ["front deltoid"],
             "type": "bench press",
             "variation": "bench press"
         }

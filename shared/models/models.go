@@ -42,9 +42,11 @@ type TrackerComposition struct {
 }
 
 type TrackerExercise struct {
-	Name   string    `json:"name"`
-	CretTs time.Time `json:"cretTs"`
-	UpdtTs time.Time `json:"updtTs"`
+	Name      string         `json:"name"`
+	Type      types.NullString `json:"type"`
+	Variation types.NullString `json:"variation"`
+	CretTs    time.Time      `json:"cretTs"`
+	UpdtTs    time.Time      `json:"updtTs"`
 }
 
 type TrackerExerciseDetail struct {
@@ -69,9 +71,9 @@ type TrackerExercisePerformed struct {
 type TrackerNutrition struct {
 	SubmittedOn    string                `json:"submittedOn"`
 	Calories       int16                 `json:"calories"`
-	Protein        types.NullInt16         `json:"protein"`
-	Carbohydrate   types.NullInt16         `json:"carbohydrate"`
-	Fat            types.NullInt16         `json:"fat"`
+	Protein        types.NullInt16       `json:"protein"`
+	Carbohydrate   types.NullInt16       `json:"carbohydrate"`
+	Fat            types.NullInt16       `json:"fat"`
 	Micronutrients pqtype.NullRawMessage `json:"micronutrients"`
 	CretTs         time.Time             `json:"cretTs"`
 	UpdtTs         time.Time             `json:"updtTs"`

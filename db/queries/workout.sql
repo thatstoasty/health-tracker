@@ -24,6 +24,10 @@ INSERT INTO tracker.workout (
 ) VALUES (
   $1, $2
 )
+ON CONFLICT (NAME) 
+DO UPDATE SET 
+  PROGRAM_NAME = $2,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;
 
 -- name: SubmitWorkoutDetails :one
@@ -32,4 +36,10 @@ INSERT INTO tracker.workout_details (
 ) VALUES (
   $1, $2, $3, $4, $5, $6
 )
+ON CONFLICT (WORKOUT_NAME, GROUP_ID, EXERCISE_NAME) 
+DO UPDATE SET 
+  SETS = $4,
+  REPS = $5,
+  WEIGHT = $6,
+  UPDT_S = CURRENT_TIMESTAMP
 RETURNING *;

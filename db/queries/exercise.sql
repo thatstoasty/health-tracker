@@ -14,10 +14,15 @@ WHERE NAME = $1;
 
 -- name: SubmitExercise :one
 INSERT INTO tracker.exercise (
-  NAME
+  NAME, TYPE, VARIATION
 ) VALUES (
-  $1
+  $1, $2, $3
 )
+ON CONFLICT (NAME) 
+DO UPDATE SET 
+  TYPE = $2,
+  VARIATION = $3,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;
 
 -- name: SubmitExerciseDetails :one
@@ -26,4 +31,8 @@ INSERT INTO tracker.exercise_details (
 ) VALUES (
   $1, $2, $3
 )
+ON CONFLICT (NAME, BODY_PART) 
+DO UPDATE SET 
+  LEVEL = $3,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;

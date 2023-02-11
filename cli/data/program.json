@@ -1,0 +1,57 @@
+{
+    "name": "Home Gains",
+    "workouts": [
+        {
+            "name": "Day 1",
+            "exercises": [
+                {
+                    "name": "paused bench press",
+                    "group_id": 1,
+                    "sets": 3,
+                    "reps": 6,
+                    "weight": null
+                },
+                {
+                    "name": "bench press",
+                    "group_id": 2,
+                    "sets": 3,
+                    "reps": 8,
+                    "weight": null
+                },
+                {
+                    "name": "weighted leg lift",
+                    "group_id": 2,
+                    "sets": 3,
+                    "reps": 15,
+                    "weight": null
+                }
+            ]
+        },
+        {
+            "name": "Day 2",
+            "exercises": [
+                {
+                    "name": "paused bench press",
+                    "group_id": 1,
+                    "sets": 3,
+                    "reps": 6,
+                    "weight": null
+                },
+                {
+                    "name": "bench press",
+                    "group_id": 2,
+                    "sets": 3,
+                    "reps": 8,
+                    "weight": null
+                },
+                {
+                    "name": "weighted leg lift",
+                    "group_id": 2,
+                    "sets": 3,
+                    "reps": 15,
+                    "weight": null
+                }
+            ]
+        }
+    ]
+}
