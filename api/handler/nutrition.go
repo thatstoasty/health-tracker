@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -15,12 +16,14 @@ import (
 // Submit nutrition entry
 func SubmitNutrition(c echo.Context) error {
 	var requestBody models.SubmitNutritionParams
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 
 	// bind request body to variable given
@@ -38,12 +41,14 @@ func SubmitNutrition(c echo.Context) error {
 
 // Get nutrition entry details
 func GetNutrition(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 
@@ -57,12 +62,14 @@ func GetNutrition(c echo.Context) error {
 
 // Delete nutrition entry
 func DeleteNutrition(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 

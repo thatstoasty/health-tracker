@@ -100,6 +100,10 @@ INSERT INTO tracker.workout (
 ) VALUES (
   $1, $2
 )
+ON CONFLICT (NAME) 
+DO UPDATE SET 
+  PROGRAM_NAME = $2,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING name, program_name, cret_ts, updt_ts
 `
 
@@ -126,16 +130,22 @@ INSERT INTO tracker.workout_details (
 ) VALUES (
   $1, $2, $3, $4, $5, $6
 )
+ON CONFLICT (WORKOUT_NAME, GROUP_ID, EXERCISE_NAME) 
+DO UPDATE SET 
+  SETS = $4,
+  REPS = $5,
+  WEIGHT = $6,
+  UPDT_S = CURRENT_TIMESTAMP
 RETURNING workout_name, group_id, exercise_name, sets, reps, weight, cret_ts, updt_ts
 `
 
 type SubmitWorkoutDetailsParams struct {
-	WorkoutName  string `json:"workoutName"`
-	GroupID      int16  `json:"groupID"`
-	ExerciseName string `json:"exerciseName"`
-	Sets         int16  `json:"sets"`
-	Reps         int16  `json:"reps"`
-	Weight       sql.NullInt16  `json:"weight"`
+	WorkoutName  string        `json:"workoutName"`
+	GroupID      int16         `json:"groupID"`
+	ExerciseName string        `json:"exerciseName"`
+	Sets         int16         `json:"sets"`
+	Reps         int16         `json:"reps"`
+	Weight       sql.NullInt16 `json:"weight"`
 }
 
 func (q *Queries) SubmitWorkoutDetails(ctx context.Context, arg SubmitWorkoutDetailsParams) (TrackerWorkoutDetail, error) {

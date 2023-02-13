@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -19,12 +20,14 @@ type GenericResponse struct {
 // Submit composition entry
 func SubmitComposition(c echo.Context) error {
 	var requestBody models.SubmitCompositionParams
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 
 	// bind request body to variable given
@@ -42,12 +45,14 @@ func SubmitComposition(c echo.Context) error {
 
 // Get composition entry details
 func GetComposition(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 
@@ -61,12 +66,14 @@ func GetComposition(c echo.Context) error {
 
 // Delete composition entry
 func DeleteComposition(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	date := c.Param("date")
 

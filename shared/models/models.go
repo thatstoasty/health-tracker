@@ -71,9 +71,9 @@ type TrackerExercisePerformed struct {
 type TrackerNutrition struct {
 	SubmittedOn    string                `json:"submittedOn"`
 	Calories       int16                 `json:"calories"`
-	Protein        types.NullInt16       `json:"protein"`
-	Carbohydrate   types.NullInt16       `json:"carbohydrate"`
-	Fat            types.NullInt16       `json:"fat"`
+	Protein        types.NullInt16         `json:"protein"`
+	Carbohydrate   types.NullInt16         `json:"carbohydrate"`
+	Fat            types.NullInt16         `json:"fat"`
 	Micronutrients pqtype.NullRawMessage `json:"micronutrients"`
 	CretTs         time.Time             `json:"cretTs"`
 	UpdtTs         time.Time             `json:"updtTs"`
@@ -108,14 +108,14 @@ type TrackerWorkout struct {
 }
 
 type TrackerWorkoutDetail struct {
-	WorkoutName  string    `json:"workoutName"`
-	GroupID      int16     `json:"groupID"`
-	ExerciseName string    `json:"exerciseName"`
-	Sets         int16     `json:"sets"`
-	Reps         int16     `json:"reps"`
-	Weight       int16     `json:"weight"`
-	CretTs       time.Time `json:"cretTs"`
-	UpdtTs       time.Time `json:"updtTs"`
+	WorkoutName  string        `json:"workoutName"`
+	GroupID      int16         `json:"groupID"`
+	ExerciseName string        `json:"exerciseName"`
+	Sets         int16         `json:"sets"`
+	Reps         int16         `json:"reps"`
+	Weight       types.NullInt16 `json:"weight"`
+	CretTs       time.Time     `json:"cretTs"`
+	UpdtTs       time.Time     `json:"updtTs"`
 }
 
 type TrackerWorkoutPerformed struct {

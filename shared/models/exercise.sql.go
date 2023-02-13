@@ -90,6 +90,11 @@ INSERT INTO tracker.exercise (
 ) VALUES (
   $1, $2, $3
 )
+ON CONFLICT (NAME) 
+DO UPDATE SET 
+  TYPE = $2,
+  VARIATION = $3,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING name, type, variation, cret_ts, updt_ts
 `
 
@@ -118,6 +123,10 @@ INSERT INTO tracker.exercise_details (
 ) VALUES (
   $1, $2, $3
 )
+ON CONFLICT (EXERCISE_NAME, BODY_PART) 
+DO UPDATE SET 
+  LEVEL = $3,
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING exercise_name, body_part, level, cret_ts, updt_ts
 `
 

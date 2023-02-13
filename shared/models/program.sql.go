@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 )
 
 const deleteProgram = `-- name: DeleteProgram :exec
@@ -30,13 +31,13 @@ LIMIT 1
 `
 
 type GetProgramRow struct {
-	Name         string `json:"name"`
-	Name_2       string `json:"name2"`
-	GroupID      int16  `json:"groupID"`
-	ExerciseName string `json:"exerciseName"`
-	Weight       int16  `json:"weight"`
-	Sets         int16  `json:"sets"`
-	Reps         int16  `json:"reps"`
+	Name         string        `json:"name"`
+	Name_2       string        `json:"name2"`
+	GroupID      int16         `json:"groupID"`
+	ExerciseName string        `json:"exerciseName"`
+	Weight       sql.NullInt16 `json:"weight"`
+	Sets         int16         `json:"sets"`
+	Reps         int16         `json:"reps"`
 }
 
 func (q *Queries) GetProgram(ctx context.Context, name string) ([]GetProgramRow, error) {

@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,18 +11,19 @@ import (
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
-	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
 // Get workout
 func GetWorkout(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
@@ -35,12 +37,14 @@ func GetWorkout(c echo.Context) error {
 
 // Get workout performed
 func GetWorkoutPerformed(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)
@@ -57,12 +61,14 @@ func GetWorkoutPerformed(c echo.Context) error {
 
 // Get workout names
 func GetWorkoutNames(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	limitString := c.QueryParam("limit")
 
@@ -81,12 +87,14 @@ func GetWorkoutNames(c echo.Context) error {
 
 // Delete workout
 func DeleteWorkout(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
@@ -100,12 +108,14 @@ func DeleteWorkout(c echo.Context) error {
 
 // Delete workout
 func DeleteWorkoutPerformed(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	dateString := c.Param("date")
 	date, err := time.Parse("YYYY-MM-DD", dateString)

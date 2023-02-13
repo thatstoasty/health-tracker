@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"database/sql"
 	_ "github.com/lib/pq"
+
+	"github.com/thatstoasty/health-tracker/shared/models"
 )
 
 const (
@@ -22,14 +24,16 @@ func getConnectionString() string {
 	return connectionString
 }
 
-func GetDBConnection() (*sql.DB, error) {
+func GetQueryInterface() (*models.Queries, error) {
 	connectionString := getConnectionString()
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		return nil, err
 	}
 
-	return db, nil
+	queries := models.New(db)
+
+	return queries, nil
 }
 
 func GetRIRMapping() map[float64]int {

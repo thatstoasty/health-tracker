@@ -3,24 +3,26 @@ package handler
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
-	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
 // Get exercise details
 func GetExercise(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
@@ -34,12 +36,14 @@ func GetExercise(c echo.Context) error {
 
 // Get exercise names
 func GetExerciseNames(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	limitString := c.QueryParam("limit")
 
@@ -58,12 +62,14 @@ func GetExerciseNames(c echo.Context) error {
 
 // Delete program
 func DeleteExercise(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 

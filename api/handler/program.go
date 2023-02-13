@@ -3,24 +3,26 @@ package handler
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
 
-	"github.com/thatstoasty/health-tracker/shared/models"
 	"github.com/thatstoasty/health-tracker/shared/utils"
 )
 
 // Get Program
 func GetProgram(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
@@ -34,12 +36,14 @@ func GetProgram(c echo.Context) error {
 
 // Get Program names
 func GetProgramNames(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	limitString := c.QueryParam("limit")
 	limit, err := strconv.Atoi(limitString)
@@ -57,12 +61,14 @@ func GetProgramNames(c echo.Context) error {
 
 // Delete Program
 func DeleteProgram(c echo.Context) error {
-	db, err := utils.GetDBConnection()
+	queries, err := utils.GetQueryInterface()
+	if err != nil {
+		log.Fatal(err)
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, GenericResponse{fmt.Sprintf("Failed to establish connection to postgres: %s", err)})
 	}
 
-	queries := models.New(db)
 	ctx := context.Background()
 	name := c.Param("name")
 
