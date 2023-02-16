@@ -32,12 +32,14 @@ func init() {
 	uploadCmd.AddCommand(ExercisesCmd)
 	uploadCmd.AddCommand(BodyPartsCmd)
 	uploadCmd.AddCommand(ProgramCmd)
+	uploadCmd.AddCommand(WorkoutPerformedCmd)
 
 	CompositionFileCmd.Flags().String("path", "", "Path to the CSV file containing the composition entries.")
 	NutritionFileCmd.Flags().String("path", "", "Path to the CSV file containing the nutrition entries.")
 	ExercisesCmd.Flags().String("path", "", "Path to the JSON file containing exercise definitions.")
 	BodyPartsCmd.Flags().String("path", "", "Path to the JSON file containing body part definitions.")
 	ProgramCmd.Flags().String("path", "", "Path to the JSON file containing a program definition.")
+	WorkoutPerformedCmd.Flags().String("path", "", "Path to the JSON file containing a program definition.")
 
 	uploadCmd.AddCommand(CompositionFileCmd)
 	uploadCmd.AddCommand(NutritionFileCmd)

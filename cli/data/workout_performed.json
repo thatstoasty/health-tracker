@@ -1,214 +1,214 @@
 {
-    "name": "HG Day 1",
-    "date": "02-01-2023",
-    "group": {
-        "1": [
-            {
-                "exercise": "a",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            }
-        ],
-        "2": [
-            {
-                "exercise": "a",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "b",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            }
-        ],
-        "3": [
-            {
-                "exercise": "a",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "b",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "c",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            }
-        ],
-        "4": [
-            {
-                "exercise": "a",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "b",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "c",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            },
-            {
-                "exercise": "d",
-                "performed": [
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    },
-                    {
-                        "weight": 0,
-                        "reps": 0,
-                        "rir": 0
-                    }
-                ]
-            }
-        ]
-    }
-}
+    "name":"HG Day 1",
+    "date":"02-01-2023",
+    "group":[
+       [
+          {
+             "exercise":"a",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          }
+       ],
+       [
+          {
+             "exercise":"a",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"b",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          }
+       ],
+       [
+          {
+             "exercise":"a",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"b",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"c",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          }
+       ],
+       [
+          {
+             "exercise":"a",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"b",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"c",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          },
+          {
+             "exercise":"d",
+             "performed":[
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                },
+                {
+                   "weight":0,
+                   "reps":0,
+                   "rir":0
+                }
+             ]
+          }
+       ]
+    ]
+ }

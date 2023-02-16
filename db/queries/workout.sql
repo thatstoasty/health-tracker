@@ -1,3 +1,14 @@
+-- name: SubmitWorkoutPerformed :one
+INSERT INTO tracker.set_performed (
+  WORKOUT_ID, GROUP_ID
+) VALUES (
+  $1, $2
+)
+ON CONFLICT (WORKOUT_ID, GROUP_ID) 
+DO UPDATE SET 
+  UPDT_TS = CURRENT_TIMESTAMP
+RETURNING *;
+
 -- name: GetWorkoutPerformed :one
 SELECT * FROM tracker.workout_performed
 WHERE SUBMITTED_ON = $1 LIMIT 1;

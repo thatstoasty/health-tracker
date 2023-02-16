@@ -1,0 +1,10 @@
+-- name: SubmitSetPerformed :one
+INSERT INTO tracker.set_performed (
+  WORKOUT_ID, GROUP_ID
+) VALUES (
+  $1, $2
+)
+ON CONFLICT (WORKOUT_ID, GROUP_ID) 
+DO UPDATE SET 
+  UPDT_TS = CURRENT_TIMESTAMP
+RETURNING *;
