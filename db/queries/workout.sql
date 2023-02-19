@@ -1,12 +1,9 @@
 -- name: SubmitWorkoutPerformed :one
-INSERT INTO tracker.set_performed (
-  WORKOUT_ID, GROUP_ID
+INSERT INTO tracker.workout_performed (
+  SUBMITTED_ON, WORKOUT_NAME
 ) VALUES (
   $1, $2
 )
-ON CONFLICT (WORKOUT_ID, GROUP_ID) 
-DO UPDATE SET 
-  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;
 
 -- name: GetWorkoutPerformed :one
@@ -52,5 +49,5 @@ DO UPDATE SET
   SETS = $4,
   REPS = $5,
   WEIGHT = $6,
-  UPDT_S = CURRENT_TIMESTAMP
+  UPDT_TS = CURRENT_TIMESTAMP
 RETURNING *;

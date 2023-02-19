@@ -39,9 +39,9 @@ RETURNING *;
 
 -- name: SubmitExercisePerformed :one
 INSERT INTO tracker.exercise_performed (
-  SET_ID, EXERCISE_NAME, SETS, REPS, WEIGHT, REPS_IN_RESERVE
+  SET_ID, EXERCISE_NAME, REPS, WEIGHT, REPS_IN_RESERVE
 ) VALUES (
-  $1, $2
+  $1, $2, $3, $4, $5
 )
 ON CONFLICT (WORKOUT_ID, GROUP_ID) 
 DO UPDATE SET 

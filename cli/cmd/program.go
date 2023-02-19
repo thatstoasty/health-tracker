@@ -101,12 +101,13 @@ to quickly create a Cobra application.`,
 				WorkoutName: gjson.Get(raw, "name").Str,
 			}
 
+			log.Println("Submitting program details")
 			_, err2 := queries.SubmitProgramDetails(ctx, programWorkoutLink)
 			if err2 != nil {
-				log.Println("Submitting program details")
 				log.Fatal(err2)
 			}
 
+			log.Println("Submitting workout details")
 			exercises := gjson.Get(raw, "exercises")
 			exercises.ForEach(func(key, value gjson.Result) bool {
 				exercise := value.Raw

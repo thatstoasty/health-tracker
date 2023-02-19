@@ -1,5 +1,5 @@
 {
-    "name": "Home Gains",
+    "name": "Home Gains 4",
     "workouts": [
         {
             "name": "Day 1",
@@ -19,7 +19,7 @@
                     "weight": null
                 },
                 {
-                    "name": "weighted leg lift",
+                    "name": "bulgarian split squat",
                     "group_id": 2,
                     "sets": 3,
                     "reps": 15,
@@ -45,7 +45,7 @@
                     "weight": null
                 },
                 {
-                    "name": "weighted leg lift",
+                    "name": "bulgarian split squat",
                     "group_id": 2,
                     "sets": 3,
                     "reps": 15,

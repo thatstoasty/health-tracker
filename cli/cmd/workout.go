@@ -6,7 +6,7 @@ package cmd
 
 import (
 	"context"
-	"database/sql"
+	"time"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -65,9 +65,9 @@ to quickly create a Cobra application.`,
 		parsed := gjson.ParseBytes(byteValue)
 		json := parsed.Raw
 		workoutName := gjson.Get(json, "name").Str
-		date := gjson.Get(json, "date").Str
+		dateString := gjson.Get(json, "date").Str
 		log.Println(workoutName)
-		log.Println(date)
+		log.Println(dateString)
 
 		queries, err := utils.GetQueryInterface()
 		if err != nil {
@@ -76,10 +76,13 @@ to quickly create a Cobra application.`,
 
 		ctx := context.Background()
 
-		group := gjson.Get(json, "group")
-		fmt.Printf("Inserting program: %s on date: %s", workoutName, date)
+		//group := gjson.Get(json, "group")
+		date, err := time.Parse("2006-01-02", dateString)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		response, err := queries.SubmitWorkout(ctx, workoutName)
+		response, err := queries.SubmitWorkoutPerformed(ctx, models.SubmitWorkoutPerformedParams{SubmittedOn: date, WorkoutName: workoutName})
 		if err != nil {
 			log.Fatal(err)
 		}
